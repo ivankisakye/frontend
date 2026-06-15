@@ -46,38 +46,29 @@ export default function Navbar() {
               to="/"
               className="flex items-center gap-2 flex-shrink-0 group"
             >
-              {/* Icon mark — play button like the logo */}
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-105"
-                style={{ background: '#E8731A' }}
-              >
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M3 2.5L11 7L3 11.5V2.5Z" fill="white" />
-                </svg>
-              </div>
 
-              {/* Wordmark */}
-              <div className="flex items-baseline gap-0.5 leading-none">
-                <span
-                  className="font-black text-lg tracking-tight"
-                  style={{ color: '#2A6B7C' }}
-                >
-                  Show
-                </span>
-                <span
-                  className="font-black text-lg tracking-tight"
-                  style={{ color: '#2A6B7C' }}
-                >
-                  Me
-                </span>
-                <span
-                  className="font-black text-lg tracking-tight ml-1"
-                  style={{ color: '#1a1a1a' }}
-                >
-                  Uganda
-                </span>
-              </div>
+
+
+              {/* Logo */}
+<img
+  src="/logo.png"
+  alt="Show Me Uganda"
+  className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
+/>
+
+
+
+
+              
+
+
+
+
             </Link>
+
+
+
+            
 
             {/* ── Desktop Nav links ── */}
             <div className="hidden md:flex items-center gap-1">

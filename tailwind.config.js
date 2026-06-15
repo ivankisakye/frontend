@@ -7,10 +7,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        uganda: {
-          black: '#000000',
-          yellow: '#FCDC04',
-          red: '#D90000',
+        brand: {
+          teal:   '#2A6B7C',
+          orange: '#E8731A',
         }
       },
       fontFamily: {

@@ -156,75 +156,190 @@ function GridSection({ title, subtitle, linkTo, linkLabel, posts }) {
 // ─── Navbar (redesigned with logo colors) ────────────────────────────────────
 // NOTE: Update your Navbar.jsx separately — this is just the Home page
 
-// ─── Hero ─────────────────────────────────────────────────────────────────────
-function Hero() {
-  const [search, setSearch] = useState('')
-  const [tab,    setTab]    = useState('tours')
 
-  const tabs = [
-    { key: 'tours',  label: '🦍 Things To Do' },
-    { key: 'hotel',  label: '🏨 Hotels' },
-    { key: 'events', label: '🎉 Events' },
-    { key: 'news',   label: '📰 News' },
+
+
+
+
+// ─── Hero Section (TripAdvisor Style) ────────────────────────────────────────
+function Hero() {
+  const [activeTab,    setActiveTab]    = useState('all')
+  const [search,       setSearch]       = useState('')
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const slides = [
+    {
+      image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80',
+      credit: 'Bwindi Forest',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=900&q=80',
+      credit: 'Jinja, Source of Nile',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80',
+      credit: 'Queen Elizabeth Park',
+    },
+    {
+      image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&q=80',
+      credit: 'Murchison Falls',
+    },
   ]
 
+  const tabs = [
+    { key: 'all',      label: 'Search All',    icon: '🏠' },
+    { key: 'tours',    label: 'Things to Do',  icon: '🦍' },
+    { key: 'hotel',    label: 'Hotels',        icon: '🏨' },
+    { key: 'events',   label: 'Events',        icon: '🎉' },
+    { key: 'news',     label: 'News',          icon: '📰' },
+  ]
+
+  const tabRoutes = {
+    all:    '/tours',
+    tours:  '/tours',
+    hotel:  '/directory',
+    events: '/events',
+    news:   '/news',
+  }
+
+  // Auto-slide every 4 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % slides.length)
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
+
+  function handleSearch(e) {
+    e.preventDefault()
+    window.location.href = tabRoutes[activeTab] + (search ? `?search=${search}` : '')
+  }
+
   return (
-    <section
-      className="relative text-white overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #1a4a56 0%, #2A6B7C 50%, #1a4a56 100%)' }}
-    >
-      {/* Background image overlay */}
-      <div
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=60')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      />
+    <section className="bg-white">
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 md:py-24 text-center">
+      {/* ── "Where to?" + tabs + search ── */}
+      <div className="max-w-4xl mx-auto px-4 pt-10 pb-8 text-center">
 
-        {/* Heading */}
-        <h1 className="text-4xl md:text-5xl font-black mb-3 leading-tight">
-          Where to in Uganda?
+        {/* Big heading */}
+        <h1
+          className="text-5xl md:text-6xl font-black mb-8 tracking-tight"
+          style={{ color: '#1a1a1a' }}
+        >
+          Where to?
         </h1>
-        <p className="text-white/70 text-lg mb-8">
-          Discover tours, hotels, events and hidden gems across the Pearl of Africa
-        </p>
 
-        {/* Search Tabs */}
-        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-2xl mx-auto">
-          {/* Tab bar */}
-          <div className="flex border-b border-gray-100">
-            {tabs.map(t => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key)}
-                className={`flex-1 py-3 text-xs font-semibold transition-colors ${tab === t.key ? 'border-b-2 text-white' : 'text-gray-500 hover:text-gray-700'}`}
-                style={tab === t.key ? { borderColor: '#E8731A', color: '#E8731A' } : {}}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
+        {/* Tab navigation */}
+        <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200">
+          {tabs.map(tab => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap ${
+                activeTab === tab.key
+                  ? 'border-black text-black'
+                  : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}
+            >
+              <span className="text-base">{tab.icon}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
+          ))}
+        </div>
 
-          {/* Search bar */}
-          <div className="flex items-center gap-3 px-4 py-3">
-            <span className="text-gray-400 text-lg">🔍</span>
+        {/* Search bar */}
+        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
+          <div
+            className="flex items-center gap-3 bg-white rounded-full shadow-md border border-gray-200 px-5 py-3"
+            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}
+          >
+            <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
             <input
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder={`Search ${tab === 'tours' ? 'tours & activities' : tab === 'hotel' ? 'hotels & lodges' : tab === 'events' ? 'events & festivals' : 'news & stories'}...`}
-              className="flex-1 text-gray-800 text-sm focus:outline-none placeholder-gray-400"
+              placeholder="Places to go, things to do, hotels..."
+              className="flex-1 text-gray-700 text-sm focus:outline-none bg-transparent placeholder-gray-400"
             />
-            <Link
-              to={`/${tab === 'hotel' ? 'directory' : tab}`}
-              className="text-white text-sm font-bold px-5 py-2 rounded-xl transition-colors"
+            <button
+              type="submit"
+              className="font-bold text-sm px-5 py-2 rounded-full text-white transition-opacity hover:opacity-90 flex-shrink-0"
               style={{ background: '#E8731A' }}
             >
               Search
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* ── Split Banner: Slideshow + CTA ── */}
+      <div className="max-w-6xl mx-auto px-4 pb-10">
+        <div
+          className="rounded-3xl overflow-hidden flex flex-col md:flex-row"
+          style={{ background: '#E8731A', minHeight: '380px' }}
+        >
+
+          {/* Left: Photo slideshow */}
+          <div className="relative md:w-[55%] h-64 md:h-auto overflow-hidden">
+            {slides.map((slide, i) => (
+              <div
+                key={i}
+                className="absolute inset-0 transition-opacity duration-1000"
+                style={{ opacity: currentSlide === i ? 1 : 0 }}
+              >
+                <img
+                  src={slide.image}
+                  alt={slide.credit}
+                  className="w-full h-full object-cover"
+                />
+                {/* Credit pill */}
+                <div className="absolute bottom-4 left-4">
+                  <span
+                    className="text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                    style={{ background: 'rgba(0,0,0,0.45)' }}
+                  >
+                    📍 {slide.credit}
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            {/* Slide dots */}
+            <div className="absolute bottom-4 right-4 flex gap-1.5 z-10">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCurrentSlide(i)}
+                  className="rounded-full transition-all"
+                  style={{
+                    width:  currentSlide === i ? '20px' : '8px',
+                    height: '8px',
+                    background: currentSlide === i ? 'white' : 'rgba(255,255,255,0.5)',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Right: CTA text */}
+          <div className="md:w-[45%] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+            <h2
+              className="font-black leading-tight mb-4"
+              style={{ fontSize: 'clamp(1.6rem, 3vw, 2.6rem)', color: '#1a1a1a' }}
+            >
+              Find things to do for everything you're into
+            </h2>
+            <p className="text-black/70 text-sm md:text-base mb-8">
+              Browse thousands of experiences across Uganda and book with us.
+            </p>
+            <Link
+              to="/tours"
+              className="font-black text-white text-sm px-8 py-3.5 rounded-full transition-opacity hover:opacity-90"
+              style={{ background: '#1a1a1a' }}
+            >
+              Explore now
             </Link>
           </div>
         </div>
@@ -232,6 +347,14 @@ function Hero() {
     </section>
   )
 }
+
+
+
+
+
+
+
+
 
 // ─── Category Pills (TripAdvisor style) ──────────────────────────────────────
 function CategoryPills() {

@@ -53,7 +53,7 @@ export default function Navbar() {
 <img
   src="/logo.png"
   alt="Show Me Uganda"
-  className="h-16 w-auto object-contain transition-transform group-hover:scale-105"
+  className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
 />
 
 

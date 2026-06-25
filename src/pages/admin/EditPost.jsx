@@ -16,6 +16,83 @@ function Field({ label, hint, children }) {
   )
 }
 
+// ─── Star Rating Display ──────────────────────────────────────────────────────
+function Stars({ rating }) {
+  return (
+    <div className="flex items-center gap-1">
+      {[1, 2, 3, 4, 5].map(i => (
+        <svg key={i} className="w-3 h-3" viewBox="0 0 20 20"
+          fill={i <= Math.round(rating) ? '#E8731A' : '#e5e7eb'}>
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+      <span className="text-xs font-bold text-gray-700 ml-0.5">{rating}</span>
+    </div>
+  )
+}
+
+// ─── Live Card Preview ────────────────────────────────────────────────────────
+function CardPreview({ form }) {
+  const isTourOrHotel = ['tour', 'hotel'].includes(form.category)
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm p-5">
+      <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+        👁️ Card Preview
+        <span className="text-xs font-normal text-gray-400">how it appears on the site</span>
+      </h3>
+
+      <div className="bg-gray-50 rounded-xl p-3">
+        <div className="bg-white rounded-2xl overflow-hidden shadow-sm max-w-[220px] mx-auto">
+
+          {/* Image */}
+          <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
+            {form.image_url ? (
+              <img
+                src={form.image_url}
+                alt="preview"
+                className="w-full h-full object-cover"
+                onError={e => e.target.style.display = 'none'}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-gray-300 text-3xl">
+                🖼️
+              </div>
+            )}
+          </div>
+
+          {/* Text below image */}
+          <div className="pt-3 pb-2 px-2">
+            <h3 className="font-bold text-gray-900 text-xs leading-snug mb-1.5 line-clamp-2">
+              {form.title || 'Your title will appear here'}
+            </h3>
+
+            {/* Stars — only for tour/hotel */}
+            {isTourOrHotel && form.rating && (
+              <div className="flex items-center gap-2 mb-1.5">
+                <Stars rating={parseFloat(form.rating)} />
+                {form.reviews && (
+                  <span className="text-xs text-gray-400">
+                    ({Number(form.reviews).toLocaleString()})
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Price */}
+            {isTourOrHotel && form.price && (
+              <p className="text-xs text-gray-500">
+                from <span className="font-bold text-gray-800">{form.price}</span>
+                {form.category === 'tour' ? ' per person' : ''}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function EditPost() {
   const { id }       = useParams()
   const navigate     = useNavigate()
@@ -32,6 +109,9 @@ export default function EditPost() {
     category:  'news',
     type:      'post',
     published: false,
+    rating:    '',   // ← NEW
+    reviews:   '',   // ← NEW
+    price:     '',   // ← NEW
   })
 
   useEffect(() => {
@@ -49,6 +129,9 @@ export default function EditPost() {
           category:  post.category  || 'news',
           type:      post.type      || 'post',
           published: post.published || false,
+          rating:    post.rating    || '',   // ← NEW
+          reviews:   post.reviews   || '',   // ← NEW
+          price:     post.price     || '',   // ← NEW
         })
       } catch (err) {
         setError('Failed to load post.')
@@ -88,6 +171,8 @@ export default function EditPost() {
       setLoading(false)
     }
   }
+
+  const isTourOrHotel = ['tour', 'hotel'].includes(form.category)
 
   if (fetching) {
     return (
@@ -165,6 +250,70 @@ export default function EditPost() {
                   />
                 </Field>
               </div>
+
+              {/* ── NEW: Pricing & Rating — only shown for tour or hotel ── */}
+              {isTourOrHotel && (
+                <div className="bg-white rounded-2xl shadow-sm p-6 space-y-5">
+                  <div>
+                    <h2 className="font-bold text-gray-900 text-lg">Pricing & Rating</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">These appear on the card shown to visitors</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label="Rating" hint="0.0 – 5.0">
+                      <input
+                        type="number"
+                        name="rating"
+                        value={form.rating}
+                        onChange={handleChange}
+                        className={inputClass}
+                        placeholder="e.g. 4.9"
+                        min="0"
+                        max="5"
+                        step="0.1"
+                      />
+                    </Field>
+
+                    <Field label="Number of Reviews">
+                      <input
+                        type="number"
+                        name="reviews"
+                        value={form.reviews}
+                        onChange={handleChange}
+                        className={inputClass}
+                        placeholder="e.g. 2847"
+                        min="0"
+                      />
+                    </Field>
+                  </div>
+
+                  <Field
+                    label="Price"
+                    hint={form.category === 'tour' ? 'shown as "from X per person"' : 'shown as "from X"'}
+                  >
+                    <input
+                      type="text"
+                      name="price"
+                      value={form.price}
+                      onChange={handleChange}
+                      className={inputClass}
+                      placeholder={form.category === 'tour' ? 'e.g. $700' : 'e.g. $450/night'}
+                    />
+                  </Field>
+
+                  {/* Star preview */}
+                  {form.rating && (
+                    <div className="flex items-center gap-3 pt-1">
+                      <Stars rating={parseFloat(form.rating)} />
+                      {form.reviews && (
+                        <span className="text-xs text-gray-400">
+                          ({Number(form.reviews).toLocaleString()} reviews)
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
 
             {/* ── Right: Settings ── */}
@@ -260,6 +409,9 @@ export default function EditPost() {
                   </div>
                 )}
               </div>
+
+              {/* Live Card Preview */}
+              <CardPreview form={form} />
 
             </div>
           </div>

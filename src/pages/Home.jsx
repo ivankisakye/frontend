@@ -310,6 +310,9 @@ function ToursSection({ posts }) {
         <div className="hidden md:grid grid-cols-4 gap-5">
           {display.map((post, i) => <TourCard key={post.id || i} post={post} />)}
         </div>
+
+        
+
         {/* Mobile scroll */}
         <div className="md:hidden flex gap-4 overflow-x-auto pb-3 snap-x scrollbar-hide">
           {display.map((post, i) => (
@@ -318,6 +321,9 @@ function ToursSection({ posts }) {
             </div>
           ))}
         </div>
+
+
+
       </div>
     </section>
   )
@@ -594,7 +600,12 @@ function JoinBanner() {
   )
 }
 
-// ─── Hero (DO NOT TOUCH — kept exactly as is) ────────────────────────────────
+
+
+
+
+
+// ─── Hero (UPDATED — full-bleed photo hero + existing search section below) ──
 function Hero() {
   const [activeTab,    setActiveTab]    = useState('all')
   const [search,       setSearch]       = useState('')
@@ -630,90 +641,265 @@ function Hero() {
   }
 
   return (
-    <section className="bg-white">
-      <div className="max-w-4xl mx-auto px-4 pt-10 pb-8 text-center">
-        <h1 className="text-5xl md:text-6xl font-black mb-8 tracking-tight" style={{ color: '#1a1a1a' }}>
-          Where to?
-        </h1>
-        <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200">
-          {tabs.map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap ${
-                activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
-              }`}
-            >
-              <span className="text-base">{tab.icon}</span>
-              <span className="hidden sm:inline">{tab.label}</span>
-            </button>
-          ))}
-        </div>
-        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
-          <div className="flex items-center gap-3 bg-white rounded-full shadow-md border border-gray-200 px-5 py-3"
-            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
-            <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder="Places to go, things to do, hotels..."
-              className="flex-1 text-gray-700 text-sm focus:outline-none bg-transparent placeholder-gray-400"
-            />
-            <button type="submit"
-              className="font-bold text-sm px-5 py-2 rounded-full text-white transition-opacity hover:opacity-90 flex-shrink-0"
-              style={{ background: '#E8731A' }}>
-              Search
-            </button>
-          </div>
-        </form>
-      </div>
+    <>
+      {/* ── FULL-BLEED PHOTO HERO ── */}
+      <section className="relative w-full" style={{ height: '92vh', minHeight: '560px' }}>
+        {/* Background image */}
+        <img
+          src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&q=85"
+          alt="Uganda Safari"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
 
-      <div className="max-w-6xl mx-auto px-4 pb-10">
-        <div className="rounded-3xl overflow-hidden flex flex-col md:flex-row"
-          style={{ background: '#E8731A', minHeight: '380px' }}>
-          <div className="relative md:w-[55%] h-64 md:h-auto overflow-hidden">
-            {slides.map((slide, i) => (
-              <div key={i} className="absolute inset-0 transition-opacity duration-1000"
-                style={{ opacity: currentSlide === i ? 1 : 0 }}>
-                <img src={slide.image} alt={slide.credit} className="w-full h-full object-cover" />
-                <div className="absolute bottom-4 left-4">
-                  <span className="text-white text-xs font-bold px-3 py-1.5 rounded-full"
-                    style={{ background: 'rgba(0,0,0,0.45)' }}>
-                    📍 {slide.credit}
-                  </span>
-                </div>
-              </div>
+        {/* Gradient overlay — dark bottom, slight top darkening for navbar legibility */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.55) 100%)',
+          }}
+        />
+
+        {/* Centered text content */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <p
+            className="text-xs font-bold uppercase tracking-widest mb-4 text-white/80"
+          >
+            ✦ ShowMeUganda
+          </p>
+          <h1
+            className="font-black text-white leading-tight mb-5"
+            style={{ fontSize: 'clamp(2.4rem, 6vw, 5rem)', textShadow: '0 2px 24px rgba(0,0,0,0.4)' }}
+          >
+            Unforgettable<br />Adventures
+          </h1>
+          <p
+            className="text-white/85 mb-8 max-w-lg leading-relaxed"
+            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}
+          >
+            Discover curated tours and safari experiences designed to create
+            lasting memories across breathtaking destinations.
+          </p>
+          <Link
+            to="/tours"
+            className="font-bold text-white px-8 py-3.5 rounded-full transition-opacity hover:opacity-90"
+            style={{ background: '#E8731A', fontSize: '0.9rem' }}
+          >
+            Read More
+          </Link>
+        </div>
+
+        {/* Scroll-down indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/60">
+          <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </section>
+
+
+
+      {/* ── EXISTING "WHERE TO?" SEARCH SECTION — untouched ── */}
+      <section className="bg-white">
+        <div className="max-w-4xl mx-auto px-4 pt-10 pb-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-black mb-8 tracking-tight" style={{ color: '#1a1a1a' }}>
+            Where to?
+          </h1>
+          <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200">
+            {tabs.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap ${
+                  activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
+                }`}
+              >
+                <span className="text-base">{tab.icon}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+              </button>
             ))}
-            <div className="absolute bottom-4 right-4 flex gap-1.5 z-10">
-              {slides.map((_, i) => (
-                <button key={i} onClick={() => setCurrentSlide(i)} className="rounded-full transition-all"
-                  style={{ width: currentSlide === i ? '20px' : '8px', height: '8px',
-                    background: currentSlide === i ? 'white' : 'rgba(255,255,255,0.5)' }} />
-              ))}
-            </div>
           </div>
-          <div className="md:w-[45%] flex flex-col items-center justify-center p-8 md:p-12 text-center">
-            <h2 className="font-black leading-tight mb-4"
-              style={{ fontSize: 'clamp(1.6rem, 3vw, 2.6rem)', color: '#1a1a1a' }}>
-              Find things to do for everything you're into
+          <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
+            <div className="flex items-center gap-3 bg-white rounded-full shadow-md border border-gray-200 px-5 py-3"
+              style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
+              <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Places to go, things to do, hotels..."
+                className="flex-1 text-gray-700 text-sm focus:outline-none bg-transparent placeholder-gray-400"
+              />
+              <button type="submit"
+                className="font-bold text-sm px-5 py-2 rounded-full text-white transition-opacity hover:opacity-90 flex-shrink-0"
+                style={{ background: '#E8731A' }}>
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+
+
+              {/*  slder part   */}
+        {/* ── ANIMATED SLIDESHOW CARD ── */}
+<div className="max-w-6xl mx-auto px-4 pb-10">
+  {(() => {
+    const cardSlides = [
+      {
+        image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80',
+        credit: 'Bwindi Forest',
+        bg: '#E8731A',
+        heading: 'Find things to do for everything you\'re into',
+        sub: 'Browse thousands of experiences across Uganda and book with us.',
+        btnLabel: 'Explore now',
+        btnBg: '#2A6B7C',
+        to: '/tours',
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80',
+        credit: 'Queen Elizabeth Park',
+        bg: '#2A6B7C',
+        heading: 'Find safari tour packages',
+        sub: 'Curated safari experiences across Uganda\'s finest national parks.',
+        btnLabel: 'Explore now',
+        btnBg: '#E8731A',
+        to: '/tours',
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80',
+        credit: 'Luxury Lodges',
+        bg: '#E8731A',
+        heading: 'Find luxury destinations',
+        sub: 'World-class lodges and stays in the heart of Uganda\'s wild beauty.',
+        btnLabel: 'Explore now',
+        btnBg: '#2A6B7C',
+        to: '/directory',
+      },
+      {
+        image: 'https://images.unsplash.com/photo-1521119989659-a83eee488004?w=900&q=80',
+        credit: 'Tourism Facilities',
+        bg: '#2A6B7C',
+        heading: 'List your tourism facilities',
+        sub: 'Reach thousands of travelers. Add your business to ShowMeUganda today.',
+        btnLabel: 'List your business',
+        btnBg: '#E8731A',
+        to: '/contact',
+      },
+    ]
+
+    const [cardSlide, setCardSlide] = useState(0)
+    const [transitioning, setTransitioning] = useState(false)
+
+    useEffect(() => {
+      const t = setInterval(() => {
+        setTransitioning(true)
+        setTimeout(() => {
+          setCardSlide(prev => (prev + 1) % cardSlides.length)
+          setTransitioning(false)
+        }, 400)
+      }, 4500)
+      return () => clearInterval(t)
+    }, [])
+
+    function goTo(i) {
+      if (i === cardSlide) return
+      setTransitioning(true)
+      setTimeout(() => {
+        setCardSlide(i)
+        setTransitioning(false)
+      }, 400)
+    }
+
+    const s = cardSlides[cardSlide]
+
+    return (
+      <div
+        className="rounded-3xl overflow-hidden flex flex-col md:flex-row transition-colors duration-700"
+        style={{ background: s.bg, minHeight: '380px' }}
+      >
+        {/* Left — image */}
+        <div className="relative md:w-[55%] h-64 md:h-auto overflow-hidden">
+          {cardSlides.map((slide, i) => (
+            <div
+              key={i}
+              className="absolute inset-0 transition-opacity duration-700"
+              style={{ opacity: cardSlide === i ? 1 : 0 }}
+            >
+              <img src={slide.image} alt={slide.credit} className="w-full h-full object-cover" />
+              <div className="absolute bottom-4 left-4">
+                <span
+                  className="text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                  style={{ background: 'rgba(0,0,0,0.45)' }}
+                >
+                  📍 {slide.credit}
+                </span>
+              </div>
+            </div>
+          ))}
+          {/* Dots */}
+          <div className="absolute bottom-4 right-4 flex gap-1.5 z-10">
+            {cardSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                className="rounded-full transition-all"
+                style={{
+                  width: cardSlide === i ? '20px' : '8px',
+                  height: '8px',
+                  background: cardSlide === i ? 'white' : 'rgba(255,255,255,0.5)',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Right — sliding text */}
+        <div className="md:w-[45%] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+          <div
+            className="transition-all duration-400"
+            style={{ opacity: transitioning ? 0 : 1, transform: transitioning ? 'translateY(12px)' : 'translateY(0)' }}
+          >
+            <h2
+              className="font-black leading-tight mb-4 text-white"
+              style={{ fontSize: 'clamp(1.6rem, 3vw, 2.6rem)' }}
+            >
+              {s.heading}
             </h2>
-            <p className="text-black/70 text-sm md:text-base mb-8">
-              Browse thousands of experiences across Uganda and book with us.
+            <p className="text-white/80 text-sm md:text-base mb-8">
+              {s.sub}
             </p>
-            <Link to="/tours"
-              className="font-black text-white text-sm px-8 py-3.5 rounded-full transition-opacity hover:opacity-90"
-              style={{ background: '#1a1a1a' }}>
-              Explore now
+            <Link
+              to={s.to}
+              className="font-black text-white text-sm px-8 py-3.5 rounded-full transition-all hover:opacity-90 inline-block"
+              style={{ background: s.btnBg }}
+            >
+              {s.btnLabel}
             </Link>
           </div>
         </div>
       </div>
-    </section>
+    )
+  })()}
+</div>
+
+
+
+
+      </section>
+
+
+
+    </>
   )
 }
+
+
+
+
+
+
+
 
 // ─── MAIN HOME PAGE ───────────────────────────────────────────────────────────
 export default function Home() {

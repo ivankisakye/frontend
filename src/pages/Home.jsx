@@ -646,7 +646,7 @@ function Hero() {
       <section className="relative w-full" style={{ height: '92vh', minHeight: '560px' }}>
         {/* Background image */}
         <img
-          src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600&q=85"
+          src="/images/cvr.jpg"
           alt="Uganda Safari"
           className="absolute inset-0 w-full h-full object-cover"
         />

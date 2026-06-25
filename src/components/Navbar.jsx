@@ -173,15 +173,32 @@ export default function Navbar() {
             </svg>
           </button>
 
+
+
           {/* Logo area */}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl"
-              style={{ background: '#E8731A' }}>🇺🇬</div>
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="Show Me Uganda Logo"
+                className="w-full h-full object-contain"
+              />
+            </div>
+
             <div>
-              <div className="text-white font-bold text-base leading-tight">Show Me Uganda</div>
-              <div className="text-xs" style={{ color: '#a0b89a' }}>Discover the Pearl of Africa</div>
+              <div className="text-white font-bold text-base leading-tight">
+                Show Me Uganda
+              </div>
+              <div
+                className="text-xs"
+                style={{ color: '#a0b89a' }}
+              >
+                Discover the Pearl of Africa
+              </div>
             </div>
           </div>
+
+
 
           {/* Weather / info strip */}
           <div className="flex items-center gap-4 mt-1">

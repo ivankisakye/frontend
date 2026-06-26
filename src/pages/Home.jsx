@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import apiClient from '../services/apiClient'
 import AdSlot from '../components/AdSlot'
+import PartnersMarquee from '../components/PartnersMarquee'
 
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 // Teal:   #2A6B7C  |  Orange: #E8731A
@@ -846,6 +847,7 @@ export default function Home() {
           <AdSlot size="mobilebanner" />
         </div>
 
+      <PartnersMarquee />
 
       <JoinBanner />
     </div>

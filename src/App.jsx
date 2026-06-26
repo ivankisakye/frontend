@@ -20,6 +20,7 @@ import AdminEdit from './pages/admin/EditPost'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
+import WhatsApp from './components/WhatsApp'  // 👈 ADD THIS
 
 export default function App() {
   return (
@@ -51,6 +52,7 @@ export default function App() {
                 <Route path="/conservation" element={<Conservation />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/post/:id" element={<SinglePost />} />
+                <Route path="/whatsapp" element={<WhatsApp />} />  {/* 👈 ADD THIS */}
               </Routes>
             </main>
             <Footer />

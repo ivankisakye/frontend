@@ -18,9 +18,11 @@ import AdminCreate    from './pages/admin/CreatePost'
 import AdminEdit      from './pages/admin/EditPost'
 
 // Layout
-import Navbar         from './components/Navbar'
-import Footer         from './components/Footer'
-import ProtectedRoute from './components/ProtectedRoute'
+import Navbar          from './components/Navbar'
+import Footer          from './components/Footer'
+import ProtectedRoute  from './components/ProtectedRoute'
+import ScrollToTop     from './components/ScrollToTop'
+import RouteScrollReset from './components/RouteScrollReset'
 
 export default function App() {
   return (
@@ -39,26 +41,32 @@ export default function App() {
           <ProtectedRoute><AdminEdit /></ProtectedRoute>
         } />
 
-        {/* ── Public routes — with navbar/footer/whatsapp ── */}
+        {/* ── Public routes — with navbar/footer/whatsapp/scroll ── */}
         <Route path="/*" element={
           <div className="flex flex-col min-h-screen">
+
+            {/* Resets scroll to top on every route change */}
+            <RouteScrollReset />
+
             <Navbar />
             <main className="flex-1">
               <Routes>
-                <Route path="/"            element={<Home />}         />
-                <Route path="/news"        element={<News />}         />
-                <Route path="/directory"   element={<Directory />}    />
-                <Route path="/tours"       element={<Tours />}        />
-                <Route path="/events"      element={<Events />}       />
-                <Route path="/conservation"element={<Conservation />} />
-                <Route path="/contact"     element={<Contact />}      />
-                <Route path="/whatsapp"    element={<WhatsApp />}     />
-                <Route path="/post/:id"    element={<SinglePost />}   />
+                <Route path="/"             element={<Home />}         />
+                <Route path="/news"         element={<News />}         />
+                <Route path="/directory"    element={<Directory />}    />
+                <Route path="/tours"        element={<Tours />}        />
+                <Route path="/events"       element={<Events />}       />
+                <Route path="/conservation" element={<Conservation />} />
+                <Route path="/contact"      element={<Contact />}      />
+                <Route path="/whatsapp"     element={<WhatsApp />}     />
+                <Route path="/post/:id"     element={<SinglePost />}   />
               </Routes>
             </main>
             <Footer />
-            {/* Floating WhatsApp button — shows on every public page */}
+
+            {/* ── Floating UI — bottom left: chat, bottom right: scroll ── */}
             <WhatsAppFloat />
+            <ScrollToTop />
           </div>
         } />
 

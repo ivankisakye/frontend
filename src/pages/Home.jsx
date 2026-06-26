@@ -73,7 +73,7 @@ function TourCard({ post }) {
   const to = isReal ? `/post/${post.id}` : '/tours'
 
   return (
-    <Link to={to} className="group block">
+    <Link to={to} className="group block w-full">
       <div className="bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
 
         {/* Image — clean, no text on top */}
@@ -86,10 +86,10 @@ function TourCard({ post }) {
           {/* Heart button — only icon, no text overlay */}
           <button
             onClick={e => { e.preventDefault(); setLiked(!liked) }}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all"
+            className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all"
             style={{ background: 'rgba(255,255,255,0.92)' }}
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24"
+            <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4" viewBox="0 0 24 24"
               fill={liked ? '#e53e3e' : 'none'}
               stroke={liked ? '#e53e3e' : '#374151'}
               strokeWidth="2">
@@ -99,16 +99,16 @@ function TourCard({ post }) {
         </div>
 
         {/* Text BELOW image */}
-        <div className="pt-3 pb-1 px-1">
-          <h3 className="font-bold text-gray-900 text-sm leading-snug mb-1.5 line-clamp-2 group-hover:text-orange-600 transition-colors">
+        <div className="pt-2.5 sm:pt-3 pb-1 px-1">
+          <h3 className="font-bold text-gray-900 text-xs sm:text-sm leading-snug mb-1 sm:mb-1.5 line-clamp-2 group-hover:text-orange-600 transition-colors">
             {post.title}
           </h3>
 
           {/* Stars + reviews */}
           {post.rating && (
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-1 sm:mb-1.5 flex-wrap">
               <Stars rating={post.rating} />
-              <span className="text-xs text-gray-400">
+              <span className="text-[11px] sm:text-xs text-gray-400">
                 ({post.reviews?.toLocaleString()})
               </span>
             </div>
@@ -116,7 +116,7 @@ function TourCard({ post }) {
 
           {/* Price */}
           {post.price && (
-            <p className="text-xs text-gray-500">
+            <p className="text-[11px] sm:text-xs text-gray-500">
               from <span className="font-bold text-gray-800">{post.price}</span> per person
             </p>
           )}
@@ -180,8 +180,8 @@ function NewsCard({ post }) {
   const isReal = typeof post.id === 'number'
   const to = isReal ? `/post/${post.id}` : '/news'
   return (
-    <Link to={to} className="group flex gap-4 items-start hover:bg-gray-50 rounded-2xl p-2 transition-colors">
-      <div className="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden">
+    <Link to={to} className="group flex gap-3 sm:gap-4 items-start hover:bg-gray-50 rounded-2xl p-2 transition-colors">
+      <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden">
         <img
           src={post.image_url}
           alt={post.title}
@@ -190,7 +190,7 @@ function NewsCard({ post }) {
       </div>
       <div className="flex-1 min-w-0">
         <span
-          className="text-xs font-bold uppercase tracking-wider"
+          className="text-[11px] sm:text-xs font-bold uppercase tracking-wider"
           style={{ color: '#E8731A' }}
         >
           {post.category}
@@ -246,14 +246,14 @@ function EventCard({ post }) {
 // ─── Section Header ───────────────────────────────────────────────────────────
 function SectionHeader({ title, subtitle, linkTo }) {
   return (
-    <div className="flex items-end justify-between mb-6">
-      <div>
-        <h2 className="text-xl md:text-2xl font-black text-gray-900">{title}</h2>
-        {subtitle && <p className="text-gray-500 text-sm mt-0.5">{subtitle}</p>}
+    <div className="flex items-end justify-between mb-5 sm:mb-6 gap-3">
+      <div className="min-w-0">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-black text-gray-900">{title}</h2>
+        {subtitle && <p className="text-gray-500 text-xs sm:text-sm mt-0.5">{subtitle}</p>}
       </div>
       <Link
         to={linkTo}
-        className="text-sm font-semibold whitespace-nowrap ml-4 hover:underline"
+        className="text-xs sm:text-sm font-semibold whitespace-nowrap ml-2 hover:underline flex-shrink-0"
         style={{ color: '#2A6B7C' }}
       >
         See all →
@@ -265,13 +265,13 @@ function SectionHeader({ title, subtitle, linkTo }) {
 // ─── 1. Category Image Grid (like TripAdvisor "Find by interest") ─────────────
 function CategoryImageGrid() {
   return (
-    <section className="py-10 bg-white border-b border-gray-100">
+    <section className="py-8 sm:py-10 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-xl md:text-2xl font-black text-gray-900 mb-2">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-black text-gray-900 mb-2">
           Find things to do by interest
         </h2>
-        <p className="text-gray-500 text-sm mb-6">Whatever you're into, we've got it</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <p className="text-gray-500 text-xs sm:text-sm mb-5 sm:mb-6">Whatever you're into, we've got it</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {EXPLORE_CATEGORIES.map(cat => (
             <Link
               key={cat.label}
@@ -285,7 +285,7 @@ function CategoryImageGrid() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               <div className="absolute bottom-0 left-0 p-3">
-                <div className="text-white font-black text-base">{cat.label}</div>
+                <div className="text-white font-black text-sm sm:text-base">{cat.label}</div>
               </div>
             </Link>
           ))}
@@ -299,7 +299,7 @@ function CategoryImageGrid() {
 function ToursSection({ posts }) {
   const display = posts.slice(0, 8)
   return (
-    <section className="py-10 bg-white">
+    <section className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <SectionHeader
           title="Experiences travelers love"
@@ -311,18 +311,14 @@ function ToursSection({ posts }) {
           {display.map((post, i) => <TourCard key={post.id || i} post={post} />)}
         </div>
 
-        
-
-        {/* Mobile scroll */}
-        <div className="md:hidden flex gap-4 overflow-x-auto pb-3 snap-x scrollbar-hide">
+        {/* Mobile scroll — smaller cards so ~2.2 fit on screen at once */}
+        <div className="md:hidden flex gap-3 overflow-x-auto pb-3 snap-x scrollbar-hide -mx-4 px-4">
           {display.map((post, i) => (
-            <div key={post.id || i} className="min-w-[70vw] flex-shrink-0 snap-start">
+            <div key={post.id || i} className="w-[44vw] max-w-[200px] flex-shrink-0 snap-start">
               <TourCard post={post} />
             </div>
           ))}
         </div>
-
-
 
       </div>
     </section>
@@ -334,10 +330,10 @@ function PromoBanner() {
   return (
     <section className="py-4">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="rounded-3xl overflow-hidden flex flex-col md:flex-row"
+        <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col md:flex-row"
           style={{ background: '#f0f9f5', border: '1px solid #d1ede3' }}>
           {/* Left image */}
-          <div className="md:w-[45%] h-56 md:h-auto overflow-hidden">
+          <div className="md:w-[45%] h-48 sm:h-56 md:h-auto overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1521119989659-a83eee488004?w=700&q=80"
               alt="Uganda tourism"
@@ -345,14 +341,14 @@ function PromoBanner() {
             />
           </div>
           {/* Right text */}
-          <div className="md:w-[55%] flex flex-col justify-center p-8 md:p-12">
+          <div className="md:w-[55%] flex flex-col justify-center p-6 sm:p-8 md:p-12">
             <div
               className="text-xs font-bold uppercase tracking-widest mb-3"
               style={{ color: '#2A6B7C' }}
             >
               ✦ ShowMeUganda
             </div>
-            <h3 className="text-2xl md:text-3xl font-black text-gray-900 leading-tight mb-3">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 leading-tight mb-3">
               Show some love to Uganda's hidden gems
             </h3>
             <p className="text-gray-600 text-sm leading-relaxed mb-6">
@@ -378,7 +374,7 @@ function PromoBanner() {
 function InspirationSection({ posts }) {
   const display = posts.slice(0, 3)
   return (
-    <section className="py-10 bg-white">
+    <section className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <SectionHeader
           title="Inspiration to get you going"
@@ -392,7 +388,7 @@ function InspirationSection({ posts }) {
             return (
               <Link key={post.id || i} to={to} className="group block">
                 <div className="rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-44 sm:h-48 overflow-hidden">
                     <img
                       src={post.image_url}
                       alt={post.title}
@@ -403,7 +399,7 @@ function InspirationSection({ posts }) {
                     <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#E8731A' }}>
                       {post.category}
                     </p>
-                    <h3 className="font-black text-gray-900 text-base leading-snug group-hover:text-orange-600 transition-colors">
+                    <h3 className="font-black text-gray-900 text-sm sm:text-base leading-snug group-hover:text-orange-600 transition-colors">
                       {post.title}
                     </h3>
                   </div>
@@ -418,10 +414,12 @@ function InspirationSection({ posts }) {
 }
 
 // ─── 5. Hotels Section ────────────────────────────────────────────────────────
+// NOTE: mobile behaviour intentionally left as a horizontal scroll (no column
+// wrapping) per request — only the outer spacing was lightly tightened.
 function HotelsSection({ posts }) {
   const display = posts.slice(0, 4)
   return (
-    <section className="py-10" style={{ background: '#f8f8f8' }}>
+    <section className="py-8 sm:py-10" style={{ background: '#f8f8f8' }}>
       <div className="max-w-7xl mx-auto px-4">
         <SectionHeader
           title="Top-rated hotels & lodges"
@@ -432,7 +430,7 @@ function HotelsSection({ posts }) {
         <div className="hidden md:grid grid-cols-4 gap-5">
           {display.map((post, i) => <HotelCard key={post.id || i} post={post} />)}
         </div>
-        {/* Mobile scroll */}
+        {/* Mobile scroll — unchanged: keeps scrolling horizontally, no columns */}
         <div className="md:hidden flex gap-4 overflow-x-auto pb-3 snap-x scrollbar-hide">
           {display.map((post, i) => (
             <div key={post.id || i} className="min-w-[72vw] flex-shrink-0 snap-start">
@@ -448,14 +446,14 @@ function HotelsSection({ posts }) {
 // ─── 6. Destinations — Iconic Places ─────────────────────────────────────────
 function DestinationsSection() {
   return (
-    <section className="py-10 bg-white">
+    <section className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4">
         <SectionHeader
           title="Iconic places you need to see"
           subtitle="Uganda's most breathtaking destinations"
           linkTo="/tours"
         />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {DESTINATIONS.map(dest => (
             <Link key={dest.name} to="/tours"
               className="group relative rounded-2xl overflow-hidden block"
@@ -467,8 +465,8 @@ function DestinationsSection() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 p-4">
-                <div className="text-white font-black text-lg leading-none">{dest.name}</div>
+              <div className="absolute bottom-0 left-0 p-3 sm:p-4">
+                <div className="text-white font-black text-base sm:text-lg leading-none">{dest.name}</div>
                 <div className="text-white/70 text-xs mt-0.5">{dest.sub}</div>
               </div>
             </Link>
@@ -482,15 +480,15 @@ function DestinationsSection() {
 // ─── 7. News + Events Side by Side ───────────────────────────────────────────
 function NewsAndEvents({ news, events }) {
   return (
-    <section className="py-10" style={{ background: '#f8f8f8' }}>
+    <section className="py-8 sm:py-10" style={{ background: '#f8f8f8' }}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
 
           {/* News — stacked horizontal cards */}
           <div>
-            <div className="flex items-end justify-between mb-5">
-              <h2 className="text-xl font-black text-gray-900">Latest news</h2>
-              <Link to="/news" className="text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>
+            <div className="flex items-end justify-between mb-4 sm:mb-5">
+              <h2 className="text-lg sm:text-xl font-black text-gray-900">Latest news</h2>
+              <Link to="/news" className="text-xs sm:text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>
                 See all →
               </Link>
             </div>
@@ -503,9 +501,9 @@ function NewsAndEvents({ news, events }) {
 
           {/* Events */}
           <div>
-            <div className="flex items-end justify-between mb-5">
-              <h2 className="text-xl font-black text-gray-900">Upcoming events</h2>
-              <Link to="/events" className="text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>
+            <div className="flex items-end justify-between mb-4 sm:mb-5">
+              <h2 className="text-lg sm:text-xl font-black text-gray-900">Upcoming events</h2>
+              <Link to="/events" className="text-xs sm:text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>
                 See all →
               </Link>
             </div>
@@ -527,18 +525,18 @@ function CommunityBanner() {
     <section className="py-4">
       <div className="max-w-7xl mx-auto px-4">
         <div
-          className="rounded-3xl overflow-hidden flex flex-col md:flex-row items-stretch"
+          className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col md:flex-row items-stretch"
           style={{ background: '#1a1a1a', minHeight: '280px' }}
         >
           {/* Left text */}
-          <div className="md:w-[55%] flex flex-col justify-center p-8 md:p-14">
+          <div className="md:w-[55%] flex flex-col justify-center p-6 sm:p-8 md:p-14">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-5"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5"
               style={{ background: '#E8731A' }}
             >
               🏆
             </div>
-            <h3 className="text-3xl md:text-4xl font-black text-white leading-tight mb-3">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight mb-3">
               Travelers' Choice<br />Best of Uganda
             </h3>
             <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
@@ -554,7 +552,7 @@ function CommunityBanner() {
             </Link>
           </div>
           {/* Right image */}
-          <div className="md:w-[45%] h-56 md:h-auto overflow-hidden">
+          <div className="md:w-[45%] h-48 sm:h-56 md:h-auto overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=700&q=80"
               alt="Uganda wildlife"
@@ -570,9 +568,9 @@ function CommunityBanner() {
 // ─── 9. Join Community Footer Banner ─────────────────────────────────────────
 function JoinBanner() {
   return (
-    <section className="py-12 bg-white border-t border-gray-100">
+    <section className="py-10 sm:py-12 bg-white border-t border-gray-100">
       <div className="max-w-4xl mx-auto px-4 text-center">
-        <h3 className="text-2xl md:text-3xl font-black text-gray-900 mb-3">
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-gray-900 mb-3">
           ShowMeUganda: join the largest Uganda travel community
         </h3>
         <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-xl mx-auto">
@@ -643,7 +641,7 @@ function Hero() {
   return (
     <>
       {/* ── FULL-BLEED PHOTO HERO ── */}
-      <section className="relative w-full" style={{ height: '92vh', minHeight: '560px' }}>
+      <section className="relative w-full" style={{ height: '92vh', minHeight: '480px' }}>
         {/* Background image */}
         <img
           src="/images/cvr.jpg"
@@ -668,20 +666,20 @@ function Hero() {
           </p>
           <h1
             className="font-black text-white leading-tight mb-5"
-            style={{ fontSize: 'clamp(2.4rem, 6vw, 5rem)', textShadow: '0 2px 24px rgba(0,0,0,0.4)' }}
+            style={{ fontSize: 'clamp(2.1rem, 9vw, 5rem)', textShadow: '0 2px 24px rgba(0,0,0,0.4)' }}
           >
             Unforgettable<br />Adventures
           </h1>
           <p
             className="text-white/85 mb-8 max-w-lg leading-relaxed"
-            style={{ fontSize: 'clamp(0.95rem, 2vw, 1.15rem)', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}
+            style={{ fontSize: 'clamp(0.9rem, 2.4vw, 1.15rem)', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}
           >
             Discover curated tours and safari experiences designed to create
             lasting memories across breathtaking destinations.
           </p>
           <Link
             to="/tours"
-            className="font-bold text-white px-8 py-3.5 rounded-full transition-opacity hover:opacity-90"
+            className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full transition-opacity hover:opacity-90"
             style={{ background: '#E8731A', fontSize: '0.9rem' }}
           >
             Read More
@@ -689,7 +687,7 @@ function Hero() {
         </div>
 
         {/* Scroll-down indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/60">
+        <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/60">
           <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
@@ -700,28 +698,28 @@ function Hero() {
 
       {/* ── EXISTING "WHERE TO?" SEARCH SECTION — untouched ── */}
       <section className="bg-white">
-        <div className="max-w-4xl mx-auto px-4 pt-10 pb-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-black mb-8 tracking-tight" style={{ color: '#1a1a1a' }}>
+        <div className="max-w-4xl mx-auto px-4 pt-8 sm:pt-10 pb-6 sm:pb-8 text-center">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-6 sm:mb-8 tracking-tight" style={{ color: '#1a1a1a' }}>
             Where to?
           </h1>
-          <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200">
+          <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200 overflow-x-auto">
             {tabs.map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0 ${
                   activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
                 }`}
               >
-                <span className="text-base">{tab.icon}</span>
+                <span className="text-sm sm:text-base">{tab.icon}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
           </div>
           <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
-            <div className="flex items-center gap-3 bg-white rounded-full shadow-md border border-gray-200 px-5 py-3"
+            <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-full shadow-md border border-gray-200 px-4 sm:px-5 py-2.5 sm:py-3"
               style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
-              <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
@@ -729,10 +727,10 @@ function Hero() {
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Places to go, things to do, hotels..."
-                className="flex-1 text-gray-700 text-sm focus:outline-none bg-transparent placeholder-gray-400"
+                className="flex-1 min-w-0 text-gray-700 text-xs sm:text-sm focus:outline-none bg-transparent placeholder-gray-400"
               />
               <button type="submit"
-                className="font-bold text-sm px-5 py-2 rounded-full text-white transition-opacity hover:opacity-90 flex-shrink-0"
+                className="font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full text-white transition-opacity hover:opacity-90 flex-shrink-0"
                 style={{ background: '#E8731A' }}>
                 Search
               </button>
@@ -743,7 +741,7 @@ function Hero() {
 
               {/*  slder part   */}
         {/* ── ANIMATED SLIDESHOW CARD ── */}
-<div className="max-w-6xl mx-auto px-4 pb-10">
+<div className="max-w-6xl mx-auto px-4 pb-8 sm:pb-10">
   {(() => {
     const cardSlides = [
       {
@@ -815,11 +813,11 @@ function Hero() {
 
     return (
       <div
-        className="rounded-3xl overflow-hidden flex flex-col md:flex-row transition-colors duration-700"
-        style={{ background: s.bg, minHeight: '380px' }}
+        className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col md:flex-row transition-colors duration-700"
+        style={{ background: s.bg, minHeight: '340px' }}
       >
         {/* Left — image */}
-        <div className="relative md:w-[55%] h-64 md:h-auto overflow-hidden">
+        <div className="relative md:w-[55%] h-52 sm:h-64 md:h-auto overflow-hidden">
           {cardSlides.map((slide, i) => (
             <div
               key={i}
@@ -827,9 +825,9 @@ function Hero() {
               style={{ opacity: cardSlide === i ? 1 : 0 }}
             >
               <img src={slide.image} alt={slide.credit} className="w-full h-full object-cover" />
-              <div className="absolute bottom-4 left-4">
+              <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
                 <span
-                  className="text-white text-xs font-bold px-3 py-1.5 rounded-full"
+                  className="text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full"
                   style={{ background: 'rgba(0,0,0,0.45)' }}
                 >
                   📍 {slide.credit}
@@ -838,7 +836,7 @@ function Hero() {
             </div>
           ))}
           {/* Dots */}
-          <div className="absolute bottom-4 right-4 flex gap-1.5 z-10">
+          <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 flex gap-1.5 z-10">
             {cardSlides.map((_, i) => (
               <button
                 key={i}
@@ -855,23 +853,23 @@ function Hero() {
         </div>
 
         {/* Right — sliding text */}
-        <div className="md:w-[45%] flex flex-col items-center justify-center p-8 md:p-12 text-center">
+        <div className="md:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 md:p-12 text-center">
           <div
             className="transition-all duration-400"
             style={{ opacity: transitioning ? 0 : 1, transform: transitioning ? 'translateY(12px)' : 'translateY(0)' }}
           >
             <h2
-              className="font-black leading-tight mb-4 text-white"
-              style={{ fontSize: 'clamp(1.6rem, 3vw, 2.6rem)' }}
+              className="font-black leading-tight mb-3 sm:mb-4 text-white"
+              style={{ fontSize: 'clamp(1.35rem, 4.5vw, 2.6rem)' }}
             >
               {s.heading}
             </h2>
-            <p className="text-white/80 text-sm md:text-base mb-8">
+            <p className="text-white/80 text-sm md:text-base mb-6 sm:mb-8">
               {s.sub}
             </p>
             <Link
               to={s.to}
-              className="font-black text-white text-sm px-8 py-3.5 rounded-full transition-all hover:opacity-90 inline-block"
+              className="font-black text-white text-sm px-7 sm:px-8 py-3 sm:py-3.5 rounded-full transition-all hover:opacity-90 inline-block"
               style={{ background: s.btnBg }}
             >
               {s.btnLabel}
@@ -935,7 +933,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
 
       {/* 1. Hero — UNTOUCHED */}
       <Hero />

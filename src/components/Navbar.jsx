@@ -20,17 +20,34 @@ const destinations = [
 export default function Navbar() {
   const [open,     setOpen]     = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [time,     setTime]     = useState('')
   const location = useLocation()
 
+  // Live Uganda time (EAT = UTC+3)
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', onScroll)
+    const tick = () => {
+      const now = new Date()
+      setTime(now.toLocaleTimeString('en-UG', {
+        timeZone: 'Africa/Kampala',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      }))
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40)
+    window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   useEffect(() => { setOpen(false) }, [location])
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -40,22 +57,46 @@ export default function Navbar() {
     <>
       {/* ── Navbar ── */}
       <nav
-        className="sticky top-0 z-50 w-full transition-all duration-300"
+        className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-400"
         style={{
-          background: scrolled ? 'rgba(255,255,255,0.98)' : '#ffffff',
-          boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.08)' : '0 1px 0 #e5e7eb',
-          backdropFilter: 'blur(12px)',
+          background: scrolled
+            ? 'rgba(255,255,255,0.98)'
+            : 'transparent',
+          boxShadow: scrolled
+            ? '0 2px 20px rgba(0,0,0,0.10)'
+            : 'none',
+          backdropFilter: scrolled ? 'blur(12px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
+        {/* Subtle gradient overlay at top when transparent — helps text contrast over any photo */}
+        {!scrolled && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+          />
+        )}
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
               <img
-                src="/logo.png"
+                src="/logo2.png"
                 alt="Show Me Uganda"
                 className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
+                style={{
+                  filter: scrolled
+                    ? 'none'
+                    : 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))',
+                }}
               />
             </Link>
 
@@ -69,7 +110,9 @@ export default function Navbar() {
                     `px-3 py-2 rounded-xl text-sm font-medium transition-all duration-150 ${
                       isActive
                         ? 'text-white font-semibold'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        : scrolled
+                          ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                          : 'text-white/90 hover:text-white hover:bg-white/15'
                     }`
                   }
                   style={({ isActive }) => isActive ? { background: '#E8731A' } : {}}
@@ -83,16 +126,38 @@ export default function Navbar() {
             <div className="hidden md:flex items-center gap-3">
               <Link
                 to="/contact"
-                className="text-sm font-semibold text-gray-600 hover:text-gray-900 transition-colors px-3 py-2"
+                className="text-sm font-semibold transition-colors px-3 py-2"
+                style={{ color: scrolled ? '#4b5563' : 'rgba(255,255,255,0.9)' }}
+                onMouseEnter={e => { e.currentTarget.style.color = scrolled ? '#111827' : 'white' }}
+                onMouseLeave={e => { e.currentTarget.style.color = scrolled ? '#4b5563' : 'rgba(255,255,255,0.9)' }}
               >
                 List a Business
               </Link>
               <Link
                 to="/admin/login"
                 className="flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full border-2 transition-all hover:shadow-md"
-                style={{ borderColor: '#2A6B7C', color: '#2A6B7C' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#2A6B7C'; e.currentTarget.style.color = 'white' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#2A6B7C' }}
+                style={
+                  scrolled
+                    ? { borderColor: '#2A6B7C', color: '#2A6B7C', background: 'transparent' }
+                    : { borderColor: 'rgba(255,255,255,0.8)', color: 'white', background: 'rgba(255,255,255,0.1)' }
+                }
+                onMouseEnter={e => {
+                  if (scrolled) {
+                    e.currentTarget.style.background = '#2A6B7C'
+                    e.currentTarget.style.color = 'white'
+                  } else {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (scrolled) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = '#2A6B7C'
+                  } else {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
+                    e.currentTarget.style.color = 'white'
+                  }
+                }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -110,11 +175,20 @@ export default function Navbar() {
               aria-label="Toggle menu"
             >
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{ background: open ? 'white' : '#1a1a1a', transform: open ? 'translateY(8px) rotate(45deg)' : 'none' }} />
+                style={{
+                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
+                  transform: open ? 'translateY(8px) rotate(45deg)' : 'none',
+                }} />
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{ background: open ? 'white' : '#1a1a1a', opacity: open ? 0 : 1 }} />
+                style={{
+                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
+                  opacity: open ? 0 : 1,
+                }} />
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{ background: open ? 'white' : '#1a1a1a', transform: open ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
+                style={{
+                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
+                  transform: open ? 'translateY(-8px) rotate(-45deg)' : 'none',
+                }} />
             </button>
           </div>
         </div>
@@ -139,14 +213,17 @@ export default function Navbar() {
           maxWidth: 360,
           transform: open ? 'translateX(0)' : 'translateX(100%)',
           transition: 'transform 0.35s cubic-bezier(0.32,0,0.15,1)',
-          background: '#0f1c14',
+          background: 'rgba(10, 30, 40, 0.55)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderLeft: '1px solid rgba(42,107,124,0.25)',
         }}
       >
         {/* ── Hero Banner ── */}
         <div
           className="relative flex-shrink-0"
           style={{
-            background: 'linear-gradient(145deg, #1a3a28 0%, #0f1c14 60%, #1a2a1a 100%)',
+            background: 'linear-gradient(145deg, rgba(20,55,70,0.85) 0%, rgba(10,30,40,0.75) 60%, rgba(15,35,50,0.85) 100%)',
             padding: '28px 24px 24px',
             borderBottom: '1px solid rgba(232,115,26,0.25)',
           }}
@@ -173,8 +250,6 @@ export default function Navbar() {
             </svg>
           </button>
 
-
-
           {/* Logo area */}
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden">
@@ -184,21 +259,15 @@ export default function Navbar() {
                 className="w-full h-full object-contain"
               />
             </div>
-
             <div>
               <div className="text-white font-bold text-base leading-tight">
                 Show Me Uganda
               </div>
-              <div
-                className="text-xs"
-                style={{ color: '#a0b89a' }}
-              >
+              <div className="text-xs" style={{ color: '#a0b89a' }}>
                 Discover the Pearl of Africa
               </div>
             </div>
           </div>
-
-
 
           {/* Weather / info strip */}
           <div className="flex items-center gap-4 mt-1">
@@ -209,7 +278,7 @@ export default function Navbar() {
             <div className="w-px h-3" style={{ background: 'rgba(255,255,255,0.15)' }} />
             <div className="flex items-center gap-1.5">
               <span style={{ fontSize: 12 }}>🕐</span>
-              <span className="text-xs" style={{ color: '#c8dcc4' }}>EAT (UTC+3)</span>
+              <span className="text-xs font-medium" style={{ color: '#7ecfde' }}>{time} · Kampala</span>
             </div>
           </div>
         </div>
@@ -232,8 +301,8 @@ export default function Navbar() {
                   borderRadius: 14,
                   textDecoration: 'none',
                   transition: 'all 0.18s ease',
-                  background: isActive ? 'rgba(232,115,26,0.15)' : 'transparent',
-                  border: isActive ? '1px solid rgba(232,115,26,0.4)' : '1px solid transparent',
+                  background: isActive ? 'rgba(232,115,26,0.18)' : 'rgba(255,255,255,0.04)',
+                  border: isActive ? '1px solid rgba(232,115,26,0.4)' : '1px solid rgba(255,255,255,0.06)',
                   animationDelay: `${i * 40}ms`,
                 })}
               >
@@ -241,7 +310,7 @@ export default function Navbar() {
                   <>
                     <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-base"
                       style={{
-                        background: isActive ? '#E8731A' : 'rgba(255,255,255,0.07)',
+                        background: isActive ? '#E8731A' : 'rgba(42,107,124,0.25)',
                         transition: 'background 0.18s',
                       }}>
                       {link.icon}
@@ -251,7 +320,7 @@ export default function Navbar() {
                         style={{ color: isActive ? '#E8731A' : '#e8f0e6' }}>
                         {link.label}
                       </div>
-                      <div className="text-xs mt-0.5 truncate" style={{ color: '#6b8a65' }}>
+                      <div className="text-xs mt-0.5 truncate" style={{ color: '#5a9aaa' }}>
                         {link.desc}
                       </div>
                     </div>
@@ -268,7 +337,7 @@ export default function Navbar() {
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 24px' }} />
+        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '4px 24px' }} />
 
         {/* ── Popular Destinations ── */}
         <div className="flex-shrink-0" style={{ padding: '16px 16px 8px' }}>
@@ -281,7 +350,7 @@ export default function Navbar() {
                 key={dest.name}
                 to={`/tours?destination=${encodeURIComponent(dest.name)}`}
                 className="flex flex-col gap-0.5 rounded-xl p-3 transition-colors"
-                style={{ background: 'rgba(42,107,124,0.12)', border: '1px solid rgba(42,107,124,0.2)' }}
+                style={{ background: 'rgba(42,107,124,0.12)', border: '1px solid rgba(42,107,124,0.2)', textDecoration: 'none' }}
               >
                 <span className="text-xs font-semibold leading-tight" style={{ color: '#7ecfde' }}>
                   {dest.name}
@@ -293,18 +362,16 @@ export default function Navbar() {
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '4px 24px' }} />
+        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '4px 24px' }} />
 
         {/* ── Contact Info ── */}
         <div className="flex-shrink-0" style={{ padding: '16px 24px 8px' }}>
-          <div className="text-xs font-bold tracking-widest mb-3 uppercase" style={{ color: '#a0b89a' }}>
+          <div className="text-xs font-bold tracking-widest mb-3 uppercase" style={{ color: '#7ecfde' }}>
             Get In Touch
           </div>
 
           <div className="flex flex-col gap-3">
-            <a href="tel:+256700000000"
-              className="flex items-center gap-3 group"
-              style={{ textDecoration: 'none' }}>
+            <a href="tel:+256700000000" className="flex items-center gap-3 group" style={{ textDecoration: 'none' }}>
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: 'rgba(232,115,26,0.15)' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8731A" strokeWidth="2">
@@ -312,14 +379,12 @@ export default function Navbar() {
                 </svg>
               </div>
               <div>
-                <div className="text-xs" style={{ color: '#6b8a65' }}>Call us</div>
+                <div className="text-xs" style={{ color: '#5a9aaa' }}>Call us</div>
                 <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>+256 700 000 000</div>
               </div>
             </a>
 
-            <a href="mailto:info@showmeuganda.com"
-              className="flex items-center gap-3"
-              style={{ textDecoration: 'none' }}>
+            <a href="mailto:info@showmeuganda.com" className="flex items-center gap-3" style={{ textDecoration: 'none' }}>
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: 'rgba(42,107,124,0.2)' }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2A6B7C" strokeWidth="2">
@@ -328,7 +393,7 @@ export default function Navbar() {
                 </svg>
               </div>
               <div>
-                <div className="text-xs" style={{ color: '#6b8a65' }}>Email us</div>
+                <div className="text-xs" style={{ color: '#5a9aaa' }}>Email us</div>
                 <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>info@showmeuganda.com</div>
               </div>
             </a>
@@ -342,7 +407,7 @@ export default function Navbar() {
                 </svg>
               </div>
               <div>
-                <div className="text-xs" style={{ color: '#6b8a65' }}>Location</div>
+                <div className="text-xs" style={{ color: '#5a9aaa' }}>Location</div>
                 <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>Kampala, Uganda</div>
               </div>
             </div>
@@ -350,7 +415,7 @@ export default function Navbar() {
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', margin: '12px 24px' }} />
+        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '12px 24px' }} />
 
         {/* ── CTA Buttons ── */}
         <div className="flex-shrink-0" style={{ padding: '0 16px 16px' }}>
@@ -388,7 +453,7 @@ export default function Navbar() {
             ].map(s => (
               <button key={s.label} title={s.label}
                 className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all hover:scale-110"
-                style={{ background: 'rgba(255,255,255,0.07)', color: s.color }}>
+                style={{ background: 'rgba(42,107,124,0.15)', color: s.color }}>
                 {s.icon}
               </button>
             ))}
@@ -396,7 +461,7 @@ export default function Navbar() {
         </div>
 
         {/* ── Footer tagline ── */}
-        <div className="flex-shrink-0 text-center pb-6 pt-1" style={{ color: '#3a5a36', fontSize: 11 }}>
+        <div className="flex-shrink-0 text-center pb-6 pt-1" style={{ color: '#3a7a8a', fontSize: 11 }}>
           © 2025 Show Me Uganda · Pearl of Africa
         </div>
       </div>

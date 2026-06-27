@@ -325,6 +325,8 @@ function ToursSection({ posts }) {
         <div className="hidden md:grid grid-cols-4 gap-5">
           {display.map((post, i) => <TourCard key={post.id || i} post={post} delay={i * 80} />)}
         </div>
+
+
         <div className="md:hidden flex gap-3 overflow-x-auto pb-3 snap-x scrollbar-hide -mx-4 px-4">
           {display.map((post, i) => (
             <div key={post.id || i} className="w-[44vw] max-w-[200px] flex-shrink-0 snap-start">
@@ -332,6 +334,9 @@ function ToursSection({ posts }) {
             </div>
           ))}
         </div>
+
+
+        
       </div>
     </section>
   )

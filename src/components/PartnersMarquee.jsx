@@ -116,8 +116,7 @@ export default function PartnersMarquee() {
           Our Partners & Friends
         </h2>
         <p className="text-gray-400 text-sm mt-2 max-w-md mx-auto">
-          We work with the world's leading travel brands, airlines, and
-          conservation organisations to bring you the best of Uganda.
+          We work with the world's leading travel brands.
         </p>
       </div>
 

@@ -1,27 +1,26 @@
 import { Routes, Route } from 'react-router-dom'
 
 // Public Pages
-import Home         from './pages/Home'
-import News         from './pages/News'
-import Directory    from './pages/Directory'
-import Tours        from './pages/Tours'
-import Events       from './pages/Events'
-import Conservation from './pages/Conservation'
-import Contact      from './pages/Contact'
-import SinglePost   from './pages/SinglePost'
+import Home            from './pages/Home'
+import News            from './pages/News'
+import Directory       from './pages/Directory'
+import Tours           from './pages/Tours'
+import Events          from './pages/Events'
+import Conservation    from './pages/Conservation'
+import Contact         from './pages/Contact'
+import SinglePost      from './pages/SinglePost'
 import WhatsApp, { WhatsAppFloat } from './pages/WhatsApp'
 
 // Admin Pages
-import AdminLogin     from './pages/admin/Login'
-import AdminDashboard from './pages/admin/Dashboard'
-import AdminCreate    from './pages/admin/CreatePost'
-import AdminEdit      from './pages/admin/EditPost'
+import AdminLogin      from './pages/admin/Login'
+import AdminDashboard  from './pages/admin/Dashboard'
+import AdminCreate     from './pages/admin/CreatePost'
+import AdminEdit       from './pages/admin/EditPost'
 
 // Layout
 import Navbar          from './components/Navbar'
 import Footer          from './components/Footer'
 import ProtectedRoute  from './components/ProtectedRoute'
-import ScrollToTop     from './components/ScrollToTop'
 import RouteScrollReset from './components/RouteScrollReset'
 
 export default function App() {
@@ -41,13 +40,10 @@ export default function App() {
           <ProtectedRoute><AdminEdit /></ProtectedRoute>
         } />
 
-        {/* ── Public routes — with navbar/footer/whatsapp/scroll ── */}
+        {/* ── Public routes — with navbar/footer/whatsapp ── */}
         <Route path="/*" element={
           <div className="flex flex-col min-h-screen">
-
-            {/* Resets scroll to top on every route change */}
             <RouteScrollReset />
-
             <Navbar />
             <main className="flex-1">
               <Routes>
@@ -63,10 +59,7 @@ export default function App() {
               </Routes>
             </main>
             <Footer />
-
-            {/* ── Floating UI — bottom left: chat, bottom right: scroll ── */}
             <WhatsAppFloat />
-            <ScrollToTop />
           </div>
         } />
 

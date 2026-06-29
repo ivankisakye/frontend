@@ -553,6 +553,10 @@ function JoinBanner() {
   )
 }
 
+
+
+
+
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   const [activeTab,    setActiveTab]    = useState('all')
@@ -610,34 +614,152 @@ function Hero() {
 
   return (
     <>
-      {/* ── FULL-BLEED PHOTO HERO ── */}
-      <section className="relative w-full" style={{ height: '92vh', minHeight: '480px' }}>
-        <img src="/images/cvr.jpg" alt="Uganda Safari"
-          className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0"
-          style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.55) 100%)' }} />
 
-        {/* Hero text — flies in on load */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
 
-          {/* Tag line */}
-          <p
-            className="text-xs font-bold uppercase tracking-widest mb-4 text-white/80"
+
+
+    
+      {/* ── FULL-BLEED PHOTO HERO — Sliding ── */}
+<section className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: '480px' }}>
+
+  <style>{`
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to   { transform: translateX(0);    }
+    }
+    @keyframes slideOutLeft {
+      from { transform: translateX(0);     }
+      to   { transform: translateX(-100%); }
+    }
+    @keyframes slideInLeft {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(0);     }
+    }
+    @keyframes slideOutRight {
+      from { transform: translateX(0);    }
+      to   { transform: translateX(100%); }
+    }
+    .slide-enter-right { animation: slideInRight  0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    .slide-exit-left   { animation: slideOutLeft  0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    .slide-enter-left  { animation: slideInLeft   0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+    .slide-exit-right  { animation: slideOutRight 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+  `}</style>
+
+  {(() => {
+    const heroSlides = [
+      { src: '/images/cvr.jpg',                                                              alt: 'Uganda Safari',               label: 'Pearl of Africa'    },
+      { src: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',    alt: 'Gorilla Trekking Bwindi',     label: 'Bwindi Forest'      },
+      { src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',       alt: 'Queen Elizabeth National Park',label: 'Queen Elizabeth Park'},
+      { src: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',   alt: 'Source of the Nile Jinja',    label: 'Source of the Nile' },
+    ]
+
+    const [heroSlide,     setHeroSlide]     = useState(0)
+    const [prevSlide,     setPrevSlide]     = useState(null)
+    const [direction,     setDirection]     = useState('right')
+    const [transitioning, setTransitioning] = useState(false)
+
+    function goTo(next) {
+      if (transitioning || next === heroSlide) return
+      setDirection(next > heroSlide ? 'right' : 'left')
+      setPrevSlide(heroSlide)
+      setHeroSlide(next)
+      setTransitioning(true)
+      setTimeout(() => { setPrevSlide(null); setTransitioning(false) }, 580)
+    }
+
+    function goNext() { goTo((heroSlide + 1) % heroSlides.length) }
+    function goPrev() { goTo((heroSlide - 1 + heroSlides.length) % heroSlides.length) }
+
+    useEffect(() => {
+      const t = setInterval(goNext, 4000)
+      return () => clearInterval(t)
+    }, [heroSlide, transitioning])
+
+    // ── single overlay used on every slide ──────────────────────────────────
+    // Two layers stacked:
+    // 1. A solid dark base at 40% opacity — covers the whole image evenly
+    // 2. A gradient that adds extra darkness at top and bottom
+    const Overlay = () => (
+      <>
+        {/* Base dark veil — this is the main change, evenly darkens whole image */}
+        <div
+          className="absolute inset-0"
+          style={{ background: 'rgba(0,0,0,0.42)', zIndex: 1 }}
+        />
+        {/* Gradient on top — extra dark at edges, lighter in centre */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.70) 100%)',
+            zIndex: 2,
+          }}
+        />
+      </>
+    )
+
+    return (
+      <>
+        {/* ── Outgoing slide ── */}
+        {prevSlide !== null && (
+          <div
+            key={`prev-${prevSlide}`}
+            className={`absolute inset-0 ${direction === 'right' ? 'slide-exit-left' : 'slide-exit-right'}`}
+            style={{ zIndex: 3 }}
+          >
+            <img
+              src={heroSlides[prevSlide].src}
+              alt={heroSlides[prevSlide].alt}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <Overlay />
+          </div>
+        )}
+
+        {/* ── Incoming slide ── */}
+        <div
+          key={`curr-${heroSlide}`}
+          className={`absolute inset-0 ${prevSlide !== null ? (direction === 'right' ? 'slide-enter-right' : 'slide-enter-left') : ''}`}
+          style={{ zIndex: 4 }}
+        >
+          <img
+            src={heroSlides[heroSlide].src}
+            alt={heroSlides[heroSlide].alt}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <Overlay />
+        </div>
+
+        {/* ── Text — sits above everything ── */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+          style={{ zIndex: 20 }}
+        >
+          {/* Location label */}
+          <div
+            className="flex items-center gap-2 mb-4"
             style={{
               opacity:    heroLoaded ? 1 : 0,
               transform:  heroLoaded ? 'none' : 'translateY(20px)',
               transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s',
             }}
           >
-            ✦ ShowMeUganda
-          </p>
+            <span className="text-xs font-bold uppercase tracking-widest text-white/80">
+              ✦ ShowMeUganda
+            </span>
+            <span
+              className="text-xs font-bold px-2.5 py-1 rounded-full text-white"
+              style={{ background: 'rgba(232,115,26,0.85)', backdropFilter: 'blur(8px)' }}
+            >
+              📍 {heroSlides[heroSlide].label}
+            </span>
+          </div>
 
-          {/* Main heading — slides up */}
+          {/* Heading */}
           <h1
             className="font-black text-white leading-tight mb-5"
             style={{
               fontSize:   'clamp(2.1rem, 9vw, 5rem)',
-              textShadow: '0 2px 24px rgba(0,0,0,0.4)',
+              textShadow: '0 2px 32px rgba(0,0,0,0.7)',
               opacity:    heroLoaded ? 1 : 0,
               transform:  heroLoaded ? 'none' : 'translateY(35px)',
               transition: 'opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s',
@@ -648,10 +770,10 @@ function Hero() {
 
           {/* Subtitle */}
           <p
-            className="text-white/85 mb-8 max-w-lg leading-relaxed"
+            className="text-white/90 mb-8 max-w-lg leading-relaxed"
             style={{
               fontSize:   'clamp(0.9rem, 2.4vw, 1.15rem)',
-              textShadow: '0 1px 8px rgba(0,0,0,0.3)',
+              textShadow: '0 1px 12px rgba(0,0,0,0.6)',
               opacity:    heroLoaded ? 1 : 0,
               transform:  heroLoaded ? 'none' : 'translateY(25px)',
               transition: 'opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s',
@@ -661,7 +783,7 @@ function Hero() {
             lasting memories across breathtaking destinations.
           </p>
 
-          {/* CTA button */}
+          {/* CTA */}
           <div
             style={{
               opacity:    heroLoaded ? 1 : 0,
@@ -669,27 +791,76 @@ function Hero() {
               transition: 'opacity 0.8s ease 0.7s, transform 0.8s ease 0.7s',
             }}
           >
-            <Link to="/tours"
+            <Link
+              to="/tours"
               className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
-              style={{ background: '#E8731A', fontSize: '0.9rem' }}>
-              Read More
+              style={{ background: '#E8731A', fontSize: '0.9rem' }}
+            >
+              Explore Now
             </Link>
           </div>
         </div>
 
-        {/* Scroll indicator */}
+        {/* ── Prev arrow ── */}
+        <button
+          onClick={goPrev}
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+          style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}
+        >
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+
+        {/* ── Next arrow ── */}
+        <button
+          onClick={goNext}
+          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+          style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}
+        >
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        {/* ── Dots ── */}
         <div
-          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/60"
-          style={{
-            opacity:    heroLoaded ? 1 : 0,
-            transition: 'opacity 1s ease 1.2s',
-          }}
+          className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2"
+          style={{ zIndex: 20 }}
+        >
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width:      heroSlide === i ? '28px' : '8px',
+                height:     '8px',
+                background: heroSlide === i ? '#E8731A' : 'rgba(255,255,255,0.55)',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* ── Scroll indicator ── */}
+        <div
+          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/70"
+          style={{ zIndex: 20, opacity: heroLoaded ? 1 : 0, transition: 'opacity 1s ease 1.2s' }}
         >
           <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </div>
-      </section>
+
+      </>
+    )
+  })()}
+</section>
+
+
+
+
+
 
       {/* ── WHERE TO? SEARCH SECTION ── */}
       <section className="bg-white">

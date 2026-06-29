@@ -23,7 +23,6 @@ export default function Navbar() {
   const [time,     setTime]     = useState('')
   const location = useLocation()
 
-  // Live Uganda time (EAT = UTC+3)
   useEffect(() => {
     const tick = () => {
       const now = new Date()
@@ -47,7 +46,6 @@ export default function Navbar() {
 
   useEffect(() => { setOpen(false) }, [location])
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -59,28 +57,18 @@ export default function Navbar() {
       <nav
         className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-400"
         style={{
-          background: scrolled
-            ? 'rgba(255,255,255,0.98)'
-            : 'transparent',
-          boxShadow: scrolled
-            ? '0 2px 20px rgba(0,0,0,0.10)'
-            : 'none',
+          background: scrolled ? 'rgba(255,255,255,0.98)' : 'transparent',
+          boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.10)' : 'none',
           backdropFilter: scrolled ? 'blur(12px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
         }}
       >
-        {/* Subtle gradient overlay at top when transparent — helps text contrast over any photo */}
         {!scrolled && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)',
-              pointerEvents: 'none',
-              zIndex: 0,
-            }}
-          />
+          <div aria-hidden="true" style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%)',
+            pointerEvents: 'none', zIndex: 0,
+          }} />
         )}
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6">
@@ -92,11 +80,7 @@ export default function Navbar() {
                 src="/logo2.png"
                 alt="Show Me Uganda"
                 className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
-                style={{
-                  filter: scrolled
-                    ? 'none'
-                    : 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))',
-                }}
+                style={{ filter: scrolled ? 'none' : 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))' }}
               />
             </Link>
 
@@ -142,21 +126,12 @@ export default function Navbar() {
                     : { borderColor: 'rgba(255,255,255,0.8)', color: 'white', background: 'rgba(255,255,255,0.1)' }
                 }
                 onMouseEnter={e => {
-                  if (scrolled) {
-                    e.currentTarget.style.background = '#2A6B7C'
-                    e.currentTarget.style.color = 'white'
-                  } else {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.25)'
-                  }
+                  if (scrolled) { e.currentTarget.style.background = '#2A6B7C'; e.currentTarget.style.color = 'white' }
+                  else { e.currentTarget.style.background = 'rgba(255,255,255,0.25)' }
                 }}
                 onMouseLeave={e => {
-                  if (scrolled) {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.color = '#2A6B7C'
-                  } else {
-                    e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
-                    e.currentTarget.style.color = 'white'
-                  }
+                  if (scrolled) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#2A6B7C' }
+                  else { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'white' }
                 }}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -175,154 +150,104 @@ export default function Navbar() {
               aria-label="Toggle menu"
             >
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{
-                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
-                  transform: open ? 'translateY(8px) rotate(45deg)' : 'none',
-                }} />
+                style={{ background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'), transform: open ? 'translateY(8px) rotate(45deg)' : 'none' }} />
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{
-                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
-                  opacity: open ? 0 : 1,
-                }} />
+                style={{ background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'), opacity: open ? 0 : 1 }} />
               <span className="block h-0.5 w-5 rounded-full transition-all duration-300"
-                style={{
-                  background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'),
-                  transform: open ? 'translateY(-8px) rotate(-45deg)' : 'none',
-                }} />
+                style={{ background: open ? 'white' : (scrolled ? '#1a1a1a' : 'white'), transform: open ? 'translateY(-8px) rotate(-45deg)' : 'none' }} />
             </button>
           </div>
         </div>
       </nav>
 
-      {/* ── Mobile Sidebar Overlay ── */}
+      {/* ── Mobile Overlay ── */}
       <div
         className="md:hidden fixed inset-0 z-[100] transition-all duration-300"
         style={{
           pointerEvents: open ? 'all' : 'none',
-          background: open ? 'rgba(0,0,0,0.55)' : 'rgba(0,0,0,0)',
-          backdropFilter: open ? 'blur(3px)' : 'none',
+          background: open ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0)',
+          backdropFilter: open ? 'blur(4px)' : 'none',
         }}
         onClick={() => setOpen(false)}
       />
 
-      {/* ── Mobile Sidebar Panel ── */}
+      {/* ── Mobile Sidebar — clean white/glass professional ── */}
       <div
         className="md:hidden fixed top-0 right-0 h-full z-[105] flex flex-col overflow-y-auto"
         style={{
-          width: '88vw',
-          maxWidth: 360,
+          width: '85vw',
+          maxWidth: 340,
           transform: open ? 'translateX(0)' : 'translateX(100%)',
-          transition: 'transform 0.35s cubic-bezier(0.32,0,0.15,1)',
-          background: 'rgba(10, 30, 40, 0.55)',
-          backdropFilter: 'blur(24px)',
-          WebkitBackdropFilter: 'blur(24px)',
-          borderLeft: '1px solid rgba(42,107,124,0.25)',
+          transition: 'transform 0.32s cubic-bezier(0.32,0,0.15,1)',
+          background: 'rgba(255,255,255,0.97)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderLeft: '1px solid rgba(0,0,0,0.06)',
+          boxShadow: '-8px 0 40px rgba(0,0,0,0.12)',
         }}
       >
-        {/* ── Hero Banner ── */}
-        <div
-          className="relative flex-shrink-0"
-          style={{
-            background: 'linear-gradient(145deg, rgba(20,55,70,0.85) 0%, rgba(10,30,40,0.75) 60%, rgba(15,35,50,0.85) 100%)',
-            padding: '28px 24px 24px',
-            borderBottom: '1px solid rgba(232,115,26,0.25)',
-          }}
-        >
-          {/* Decorative pattern */}
-          <div style={{ position: 'absolute', top: 0, right: 0, width: 120, height: 120, opacity: 0.06 }}>
-            <svg viewBox="0 0 120 120" fill="none">
-              <circle cx="60" cy="60" r="55" stroke="#E8731A" strokeWidth="1"/>
-              <circle cx="60" cy="60" r="40" stroke="#E8731A" strokeWidth="1"/>
-              <circle cx="60" cy="60" r="25" stroke="#E8731A" strokeWidth="1"/>
-              <line x1="5" y1="60" x2="115" y2="60" stroke="#E8731A" strokeWidth="1"/>
-              <line x1="60" y1="5" x2="60" y2="115" stroke="#E8731A" strokeWidth="1"/>
-            </svg>
+
+        {/* ── Header ── */}
+        <div className="flex items-center justify-between px-5 py-4 flex-shrink-0"
+          style={{ borderBottom: '1px solid #f0f0f0' }}>
+          <div className="flex items-center gap-3">
+            <img src="/logo2.png" alt="ShowMeUganda" className="h-9 w-auto object-contain" />
           </div>
-
-          {/* Close button */}
-          <button
-            onClick={() => setOpen(false)}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-            style={{ background: 'rgba(255,255,255,0.1)' }}
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
-              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-            </svg>
-          </button>
-
-          {/* Logo area */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center overflow-hidden">
-              <img
-                src="/logo.png"
-                alt="Show Me Uganda Logo"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div>
-              <div className="text-white font-bold text-base leading-tight">
-                Show Me Uganda
-              </div>
-              <div className="text-xs" style={{ color: '#a0b89a' }}>
-                Discover the Pearl of Africa
-              </div>
-            </div>
-          </div>
-
-          {/* Weather / info strip */}
-          <div className="flex items-center gap-4 mt-1">
-            <div className="flex items-center gap-1.5">
-              <span style={{ fontSize: 13 }}>☀️</span>
-              <span className="text-xs font-medium" style={{ color: '#c8dcc4' }}>Kampala · 26°C</span>
-            </div>
-            <div className="w-px h-3" style={{ background: 'rgba(255,255,255,0.15)' }} />
-            <div className="flex items-center gap-1.5">
-              <span style={{ fontSize: 12 }}>🕐</span>
-              <span className="text-xs font-medium" style={{ color: '#7ecfde' }}>{time} · Kampala</span>
-            </div>
+          <div className="flex items-center gap-3">
+            {/* Live time */}
+            <span className="text-[11px] font-semibold text-gray-400">
+              🕐 {time}
+            </span>
+            {/* Close */}
+            <button
+              onClick={() => setOpen(false)}
+              className="w-8 h-8 rounded-xl flex items-center justify-center transition-colors hover:bg-gray-100"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
           </div>
         </div>
 
-        {/* ── Nav Links ── */}
-        <div className="flex-shrink-0" style={{ padding: '20px 16px 8px' }}>
-          <div className="text-xs font-bold tracking-widest mb-3 uppercase"
-            style={{ color: '#E8731A', paddingLeft: 8 }}>Explore</div>
-
-          <div className="flex flex-col gap-1">
-            {links.map((link, i) => (
+        {/* ── Main Nav ── */}
+        <div className="flex-shrink-0 px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 px-2 mb-3">
+            Explore Uganda
+          </p>
+          <div className="space-y-1">
+            {links.map(link => (
               <NavLink
                 key={link.to}
                 to={link.to}
+                className="flex items-center gap-3 px-3 py-3 rounded-2xl transition-all"
                 style={({ isActive }) => ({
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  padding: '11px 12px',
-                  borderRadius: 14,
+                  background: isActive ? 'rgba(232,115,26,0.08)' : 'transparent',
+                  borderLeft: isActive ? '3px solid #E8731A' : '3px solid transparent',
                   textDecoration: 'none',
-                  transition: 'all 0.18s ease',
-                  background: isActive ? 'rgba(232,115,26,0.18)' : 'rgba(255,255,255,0.04)',
-                  border: isActive ? '1px solid rgba(232,115,26,0.4)' : '1px solid rgba(255,255,255,0.06)',
-                  animationDelay: `${i * 40}ms`,
                 })}
               >
                 {({ isActive }) => (
                   <>
-                    <span className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center text-base"
+                    <div
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-base flex-shrink-0"
                       style={{
-                        background: isActive ? '#E8731A' : 'rgba(42,107,124,0.25)',
-                        transition: 'background 0.18s',
-                      }}>
+                        background: isActive ? '#E8731A' : '#f5f5f5',
+                      }}
+                    >
                       {link.icon}
-                    </span>
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold leading-tight"
-                        style={{ color: isActive ? '#E8731A' : '#e8f0e6' }}>
+                      <p
+                        className="text-sm font-semibold leading-none"
+                        style={{ color: isActive ? '#E8731A' : '#1a1a1a' }}
+                      >
                         {link.label}
-                      </div>
-                      <div className="text-xs mt-0.5 truncate" style={{ color: '#5a9aaa' }}>
+                      </p>
+                      <p className="text-xs mt-0.5 text-gray-400 truncate">
                         {link.desc}
-                      </div>
+                      </p>
                     </div>
                     {isActive && (
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8731A" strokeWidth="2.5">
@@ -337,102 +262,88 @@ export default function Navbar() {
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '4px 24px' }} />
+        <div className="mx-5 flex-shrink-0" style={{ height: 1, background: '#f0f0f0' }} />
 
-        {/* ── Popular Destinations ── */}
-        <div className="flex-shrink-0" style={{ padding: '16px 16px 8px' }}>
-          <div className="text-xs font-bold tracking-widest mb-3 uppercase"
-            style={{ color: '#2A6B7C', paddingLeft: 8 }}>Popular Destinations</div>
-
+        {/* ── Destinations ── */}
+        <div className="flex-shrink-0 px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 px-2 mb-3">
+            Top Destinations
+          </p>
           <div className="grid grid-cols-2 gap-2">
             {destinations.map(dest => (
               <Link
                 key={dest.name}
                 to={`/tours?destination=${encodeURIComponent(dest.name)}`}
-                className="flex flex-col gap-0.5 rounded-xl p-3 transition-colors"
-                style={{ background: 'rgba(42,107,124,0.12)', border: '1px solid rgba(42,107,124,0.2)', textDecoration: 'none' }}
+                className="flex flex-col gap-0.5 rounded-xl px-3 py-2.5 transition-colors hover:bg-gray-50"
+                style={{ background: '#f8f8f8', textDecoration: 'none', border: '1px solid #efefef' }}
               >
-                <span className="text-xs font-semibold leading-tight" style={{ color: '#7ecfde' }}>
-                  {dest.name}
-                </span>
-                <span className="text-xs" style={{ color: '#4a7a70' }}>{dest.region}</span>
+                <span className="text-xs font-bold text-gray-800 leading-tight">{dest.name}</span>
+                <span className="text-[11px] text-gray-400">{dest.region}</span>
               </Link>
             ))}
           </div>
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '4px 24px' }} />
+        <div className="mx-5 flex-shrink-0" style={{ height: 1, background: '#f0f0f0' }} />
 
-        {/* ── Contact Info ── */}
-        <div className="flex-shrink-0" style={{ padding: '16px 24px 8px' }}>
-          <div className="text-xs font-bold tracking-widest mb-3 uppercase" style={{ color: '#7ecfde' }}>
-            Get In Touch
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <a href="tel:+256700000000" className="flex items-center gap-3 group" style={{ textDecoration: 'none' }}>
+        {/* ── Contact strip ── */}
+        <div className="flex-shrink-0 px-4 py-4">
+          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 px-2 mb-3">
+            Contact
+          </p>
+          <div className="space-y-2">
+            <a href="tel:+256700000000"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
+              style={{ textDecoration: 'none' }}
+            >
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(232,115,26,0.15)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E8731A" strokeWidth="2">
+                style={{ background: 'rgba(232,115,26,0.1)' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E8731A" strokeWidth="2">
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.24 1.23 2 2 0 012.24 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.56-1.56a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
                 </svg>
               </div>
               <div>
-                <div className="text-xs" style={{ color: '#5a9aaa' }}>Call us</div>
-                <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>+256 700 000 000</div>
+                <p className="text-xs text-gray-400">Call us</p>
+                <p className="text-sm font-semibold text-gray-800">+256 700 000 000</p>
               </div>
             </a>
 
-            <a href="mailto:info@showmeuganda.com" className="flex items-center gap-3" style={{ textDecoration: 'none' }}>
+            <a href="mailto:info@showmeuganda.com"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
+              style={{ textDecoration: 'none' }}
+            >
               <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(42,107,124,0.2)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2A6B7C" strokeWidth="2">
+                style={{ background: 'rgba(42,107,124,0.1)' }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2A6B7C" strokeWidth="2">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                   <polyline points="22,6 12,13 2,6"/>
                 </svg>
               </div>
               <div>
-                <div className="text-xs" style={{ color: '#5a9aaa' }}>Email us</div>
-                <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>info@showmeuganda.com</div>
+                <p className="text-xs text-gray-400">Email us</p>
+                <p className="text-sm font-semibold text-gray-800">info@showmeuganda.com</p>
               </div>
             </a>
-
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: 'rgba(160,184,154,0.15)' }}>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0b89a" strokeWidth="2">
-                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-              </div>
-              <div>
-                <div className="text-xs" style={{ color: '#5a9aaa' }}>Location</div>
-                <div className="text-sm font-semibold" style={{ color: '#e8f0e6' }}>Kampala, Uganda</div>
-              </div>
-            </div>
           </div>
         </div>
 
         {/* ── Divider ── */}
-        <div style={{ height: 1, background: 'rgba(42,107,124,0.2)', margin: '12px 24px' }} />
+        <div className="mx-5 flex-shrink-0" style={{ height: 1, background: '#f0f0f0' }} />
 
         {/* ── CTA Buttons ── */}
-        <div className="flex-shrink-0" style={{ padding: '0 16px 16px' }}>
+        <div className="flex-shrink-0 px-4 py-4 space-y-2.5">
           <Link
             to="/contact"
-            className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 mb-2.5 transition-all"
+            className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 transition-opacity hover:opacity-90"
             style={{ background: '#E8731A', color: 'white', textDecoration: 'none' }}
           >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
             List Your Business
           </Link>
           <Link
             to="/admin/login"
-            className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 transition-all"
-            style={{ background: 'rgba(42,107,124,0.2)', color: '#7ecfde', border: '1px solid rgba(42,107,124,0.4)', textDecoration: 'none' }}
+            className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 transition-colors hover:bg-gray-100"
+            style={{ background: '#f5f5f5', color: '#2A6B7C', border: '1px solid #e5e7eb', textDecoration: 'none' }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
@@ -442,28 +353,27 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* ── Social Links ── */}
-        <div className="flex-shrink-0" style={{ padding: '0 24px 12px' }}>
-          <div className="flex items-center gap-3 justify-center">
+        {/* ── Social ── */}
+        <div className="flex-shrink-0 px-4 pb-6 pt-1">
+          <div className="flex items-center justify-center gap-3">
             {[
               { label: 'Facebook',  icon: 'f',  color: '#1877f2' },
               { label: 'Instagram', icon: '◉',  color: '#e1306c' },
-              { label: 'Twitter',   icon: '𝕏',  color: '#e8f0e6' },
+              { label: 'Twitter',   icon: '𝕏',  color: '#374151' },
               { label: 'YouTube',   icon: '▶',  color: '#ff0000' },
             ].map(s => (
               <button key={s.label} title={s.label}
                 className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all hover:scale-110"
-                style={{ background: 'rgba(42,107,124,0.15)', color: s.color }}>
+                style={{ background: '#f5f5f5', color: s.color, border: '1px solid #efefef' }}>
                 {s.icon}
               </button>
             ))}
           </div>
+          <p className="text-center text-[11px] text-gray-300 mt-4">
+            © {new Date().getFullYear()} ShowMeUganda · Pearl of Africa
+          </p>
         </div>
 
-        {/* ── Footer tagline ── */}
-        <div className="flex-shrink-0 text-center pb-6 pt-1" style={{ color: '#3a7a8a', fontSize: 11 }}>
-          © 2025 Show Me Uganda · Pearl of Africa
-        </div>
       </div>
     </>
   )

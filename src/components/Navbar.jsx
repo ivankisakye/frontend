@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 
 const links = [
-  { to: '/tours',        label: 'Things To Do',  icon: '🦁', desc: 'Safaris, gorilla trekking & adventures' },
-  { to: '/directory',    label: 'Directory',      icon: '📋', desc: 'Businesses, services & local listings'  },
+  { to: '/',        label: 'Home',  icon: '🦁', desc: 'Safaris, gorilla trekking & adventures' },
+  { to: '/news',         label: 'Stories',      icon: '📋', desc: 'Businesses, services & local listings'  },
+  { to: '/tours',         label: 'Tour Packages',           icon: '📰', desc: 'Latest updates from across Uganda'      },
+  { to: '/conservation', label: 'Destinations',   icon: '🗺️', desc: 'Explore amazing places in Uganda'      },
   { to: '/events',       label: 'Events',         icon: '🥁', desc: 'Festivals, concerts & cultural shows'   },
-  { to: '/conservation', label: 'Conservation',   icon: '🌿', desc: 'Wildlife & environmental initiatives'   },
-  { to: '/news',         label: 'News',           icon: '📰', desc: 'Latest updates from across Uganda'      },
-  { to: '/contact',      label: 'Contact',        icon: '✉️', desc: 'Get in touch with our team'            },
+  
 ]
 
 const destinations = [
@@ -115,10 +115,10 @@ export default function Navbar() {
                 onMouseEnter={e => { e.currentTarget.style.color = scrolled ? '#111827' : 'white' }}
                 onMouseLeave={e => { e.currentTarget.style.color = scrolled ? '#4b5563' : 'rgba(255,255,255,0.9)' }}
               >
-                List a Business
+                Contact Us
               </Link>
               <Link
-                to="/admin/login"
+                to="/directory"
                 className="flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full border-2 transition-all hover:shadow-md"
                 style={
                   scrolled
@@ -138,7 +138,7 @@ export default function Navbar() {
                   <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                   <circle cx="12" cy="7" r="4" />
                 </svg>
-                Admin
+                Directory
               </Link>
             </div>
 

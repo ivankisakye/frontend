@@ -9,6 +9,8 @@ import Events          from './pages/Events'
 import Conservation    from './pages/Conservation'
 import Contact         from './pages/Contact'
 import SinglePost      from './pages/SinglePost'
+import About           from './pages/About'
+import Gallery         from './pages/Gallery'
 import WhatsApp, { WhatsAppFloat } from './pages/WhatsApp'
 
 // Admin Pages
@@ -18,9 +20,9 @@ import AdminCreate     from './pages/admin/CreatePost'
 import AdminEdit       from './pages/admin/EditPost'
 
 // Layout
-import Navbar          from './components/Navbar'
-import Footer          from './components/Footer'
-import ProtectedRoute  from './components/ProtectedRoute'
+import Navbar           from './components/Navbar'
+import Footer           from './components/Footer'
+import ProtectedRoute   from './components/ProtectedRoute'
 import RouteScrollReset from './components/RouteScrollReset'
 
 export default function App() {
@@ -54,6 +56,8 @@ export default function App() {
                 <Route path="/events"       element={<Events />}       />
                 <Route path="/conservation" element={<Conservation />} />
                 <Route path="/contact"      element={<Contact />}      />
+                <Route path="/about"        element={<About />}        />
+                <Route path="/gallery"      element={<Gallery />}      />
                 <Route path="/whatsapp"     element={<WhatsApp />}     />
                 <Route path="/post/:id"     element={<SinglePost />}   />
               </Routes>

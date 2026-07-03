@@ -321,7 +321,7 @@ function ToursSection({ posts }) {
   return (
     <section className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <SectionHeader title="Experiences travelers love" subtitle="Travelers' Choice — Best of the Best" linkTo="/tours" />
+        <SectionHeader title="Tour Packages" subtitle="Travelers' Choice — Best of the Best" linkTo="/tours" />
         <div className="hidden md:grid grid-cols-4 gap-5">
           {display.map((post, i) => <TourCard key={post.id || i} post={post} delay={i * 80} />)}
         </div>
@@ -376,13 +376,13 @@ function PromoBanner() {
   )
 }
 
-// ─── Inspiration Section ──────────────────────────────────────────────────────
+// ─── Inspiration Section::::::Travel Documentaries:::::: ──────────────────────────────────────────────────────
 function InspirationSection({ posts }) {
   const display = posts.slice(0, 3)
   return (
     <section className="py-8 sm:py-10 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <SectionHeader title="Inspiration to get you going" subtitle="Stories and guides from across Uganda" linkTo="/news" />
+        <SectionHeader title="Travel Documentaries" subtitle="Stories and guides from across Uganda" linkTo="/news" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {display.map((post, i) => {
             const isReal = typeof post.id === 'number'
@@ -436,31 +436,236 @@ function HotelsSection({ posts }) {
   )
 }
 
-// ─── Destinations Section ─────────────────────────────────────────────────────
+
+
+// ─── Destinations Section:::::Gallery::::::: ─────────────────────────────────────────────────────
+// ─── Gallery Carousel Section ─────────────────────────────────────────────────
 function DestinationsSection() {
+  const [current,      setCurrent]      = useState(0)
+  const [prev,         setPrev]         = useState(null)
+  const [dir,          setDir]          = useState('right')
+  const [transitioning, setTransitioning] = useState(false)
+  const [paused,       setPaused]       = useState(false)
+  const timerRef = useRef(null)
+
+  const SLIDES = [
+    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200&q=85', name: 'Bwindi Forest',      sub: 'Gorilla Trekking',    tag: 'Wildlife'    },
+    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=85',   name: 'Queen Elizabeth',    sub: 'National Park',       tag: 'Safari'      },
+    { image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=85',name: 'Source of the Nile', sub: 'Jinja, Uganda',       tag: 'Adventure'   },
+    { image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=85',name: 'Murchison Falls',    sub: 'North-West Uganda',   tag: 'Landscapes'  },
+    { image: 'https://images.unsplash.com/photo-1526495124232-a04e1849168c?w=1200&q=85',name: 'Kampala City',       sub: 'Capital of Uganda',   tag: 'Culture'     },
+    { image: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1200&q=85',name: 'Kibale Forest',      sub: 'Chimpanzee Tracking', tag: 'Wildlife'    },
+    { image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1200&q=85',name: 'Lake Bunyonyi',      sub: 'South-Western Uganda',tag: 'Landscapes'  },
+    { image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=85',name: 'Nyege Nyege',        sub: 'Jinja Festival',      tag: 'Culture'     },
+  ]
+
+  const TAG_COLORS = {
+    Wildlife:   '#10B981',
+    Safari:     '#E8731A',
+    Adventure:  '#3B82F6',
+    Landscapes: '#8B5CF6',
+    Culture:    '#F59E0B',
+  }
+
+  function goTo(next, direction) {
+    if (transitioning || next === current) return
+    setDir(direction)
+    setPrev(current)
+    setCurrent(next)
+    setTransitioning(true)
+    setTimeout(() => { setPrev(null); setTransitioning(false) }, 520)
+  }
+
+  function goNext() { goTo((current + 1) % SLIDES.length, 'right') }
+  function goPrev() { goTo((current - 1 + SLIDES.length) % SLIDES.length, 'left') }
+
+  // Auto-play
+  useEffect(() => {
+    if (paused) return
+    timerRef.current = setInterval(goNext, 3500)
+    return () => clearInterval(timerRef.current)
+  }, [current, paused, transitioning])
+
+  const s = SLIDES[current]
+  const p = prev !== null ? SLIDES[prev] : null
+
   return (
-    <section className="py-8 sm:py-10 bg-white">
+    <section className="py-8 sm:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4">
-        <SectionHeader title="Iconic places you need to see" subtitle="Uganda's most breathtaking destinations" linkTo="/tours" />
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          {DESTINATIONS.map((dest, i) => (
-            <Reveal key={dest.name} delay={i * 100} direction="up">
-              <Link to="/tours" className="group relative rounded-2xl overflow-hidden block" style={{ aspectRatio: '3/4' }}>
-                <img src={dest.image} alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 p-3 sm:p-4">
-                  <div className="text-white font-black text-base sm:text-lg leading-none">{dest.name}</div>
-                  <div className="text-white/70 text-xs mt-0.5">{dest.sub}</div>
+
+        {/* Section header */}
+        <div className="flex items-end justify-between mb-5 sm:mb-6 gap-3">
+          <div>
+            <h2 className="text-lg sm:text-xl md:text-2xl font-black text-gray-900">Gallery</h2>
+            <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Travel memories that inspire</p>
+          </div>
+          <Link
+            to="/gallery"
+            className="text-xs sm:text-sm font-semibold whitespace-nowrap hover:underline flex-shrink-0"
+            style={{ color: '#2A6B7C' }}
+          >
+            See all →
+          </Link>
+        </div>
+
+        {/* ── Main carousel ── */}
+        <div
+          className="relative overflow-hidden rounded-3xl"
+          style={{ height: '420px', maxHeight: '60vh' }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          <style>{`
+            @keyframes cSlideInRight  { from { transform: translateX(100%); } to { transform: translateX(0); } }
+            @keyframes cSlideOutLeft  { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+            @keyframes cSlideInLeft   { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+            @keyframes cSlideOutRight { from { transform: translateX(0); } to { transform: translateX(100%); } }
+            .c-in-right  { animation: cSlideInRight  0.52s cubic-bezier(0.32,0,0.15,1) forwards; }
+            .c-out-left  { animation: cSlideOutLeft  0.52s cubic-bezier(0.32,0,0.15,1) forwards; }
+            .c-in-left   { animation: cSlideInLeft   0.52s cubic-bezier(0.32,0,0.15,1) forwards; }
+            .c-out-right { animation: cSlideOutRight 0.52s cubic-bezier(0.32,0,0.15,1) forwards; }
+          `}</style>
+
+          {/* Outgoing slide */}
+          {p && (
+            <div
+              key={`prev-${prev}`}
+              className={`absolute inset-0 ${dir === 'right' ? 'c-out-left' : 'c-out-right'}`}
+              style={{ zIndex: 1 }}
+            >
+              <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 45%, transparent 100%)' }} />
+            </div>
+          )}
+
+          {/* Incoming slide */}
+          <div
+            key={`curr-${current}`}
+            className={`absolute inset-0 ${p ? (dir === 'right' ? 'c-in-right' : 'c-in-left') : ''}`}
+            style={{ zIndex: 2 }}
+          >
+            <img src={s.image} alt={s.name} className="w-full h-full object-cover" />
+
+            {/* Overlay */}
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.08) 45%, transparent 100%)' }} />
+
+            {/* Tag badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <span
+                className="text-xs font-black px-3 py-1 rounded-full text-white"
+                style={{ background: TAG_COLORS[s.tag] || '#E8731A' }}
+              >
+                {s.tag}
+              </span>
+            </div>
+
+            {/* Slide count */}
+            <div
+              className="absolute top-4 right-4 z-10 text-xs font-bold text-white px-2.5 py-1 rounded-full"
+              style={{ background: 'rgba(0,0,0,0.45)', backdropFilter: 'blur(8px)' }}
+            >
+              {current + 1} / {SLIDES.length}
+            </div>
+
+            {/* Bottom info */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-7 z-10">
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <h3 className="text-white font-black text-xl sm:text-3xl leading-none mb-1">
+                    {s.name}
+                  </h3>
+                  <p className="text-white/65 text-sm">📍 {s.sub}</p>
                 </div>
-              </Link>
-            </Reveal>
+                <Link
+                  to="/gallery"
+                  className="flex-shrink-0 flex items-center gap-2 text-xs font-bold px-4 py-2.5 rounded-full text-white transition-opacity hover:opacity-80"
+                  style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  Full Gallery
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Prev / Next arrows */}
+          <button
+            onClick={goPrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+            style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)' }}
+          >
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <button
+            onClick={goNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+            style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.25)' }}
+          >
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          {/* Progress bar */}
+          <div className="absolute bottom-0 left-0 right-0 z-20 flex gap-1 px-5 sm:px-7 pb-3">
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i, i > current ? 'right' : 'left')}
+                className="flex-1 h-0.5 rounded-full transition-all duration-300 overflow-hidden"
+                style={{ background: 'rgba(255,255,255,0.25)' }}
+              >
+                <div
+                  className="h-full rounded-full"
+                  style={{
+                    width:      i === current ? '100%' : i < current ? '100%' : '0%',
+                    background: i === current ? '#E8731A' : 'rgba(255,255,255,0.6)',
+                    transition: i === current ? 'none' : 'none',
+                  }}
+                />
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Thumbnail strip ── */}
+        <div className="flex gap-2 sm:gap-3 mt-3 overflow-x-auto scrollbar-hide pb-1">
+          {SLIDES.map((slide, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i, i > current ? 'right' : 'left')}
+              className="flex-shrink-0 relative rounded-xl overflow-hidden transition-all duration-300"
+              style={{
+                width:   '72px',
+                height:  '52px',
+                opacity: i === current ? 1 : 0.5,
+                transform: i === current ? 'scale(1.05)' : 'scale(1)',
+                outline: i === current ? '2px solid #E8731A' : 'none',
+                outlineOffset: '2px',
+              }}
+            >
+              <img
+                src={slide.image}
+                alt={slide.name}
+                className="w-full h-full object-cover"
+              />
+            </button>
           ))}
         </div>
+
       </div>
     </section>
   )
 }
+
+
+
+
+
 
 // ─── News + Events ────────────────────────────────────────────────────────────
 function NewsAndEvents({ news, events }) {
@@ -483,7 +688,7 @@ function NewsAndEvents({ news, events }) {
               <Link to="/events" className="text-xs sm:text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>See all →</Link>
             </div>
             <div className="flex flex-col gap-4">
-              {events.slice(0, 3).map((post, i) => <EventCard key={post.id || i} post={post} />)}
+              {events.slice(0, 2).map((post, i) => <EventCard key={post.id || i} post={post} />)}
             </div>
           </Reveal>
         </div>
@@ -491,6 +696,10 @@ function NewsAndEvents({ news, events }) {
     </section>
   )
 }
+
+
+
+
 
 // ─── Community Banner ─────────────────────────────────────────────────────────
 function CommunityBanner() {
@@ -538,13 +747,13 @@ function JoinBanner() {
             Read reviews, post photos, and share your Uganda experiences with thousands of travelers.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/tours" className="font-bold text-sm px-8 py-3 rounded-full text-white hover:opacity-90 transition-opacity"
+            <Link to="/about" className="font-bold text-sm px-8 py-3 rounded-full text-white hover:opacity-90 transition-opacity"
               style={{ background: '#E8731A' }}>
-              Start Exploring
+              About Us
             </Link>
-            <Link to="/contact" className="font-bold text-sm px-8 py-3 rounded-full border-2 hover:bg-gray-50 transition-colors"
+            <Link to="/directory" className="font-bold text-sm px-8 py-3 rounded-full border-2 hover:bg-gray-50 transition-colors"
               style={{ borderColor: '#2A6B7C', color: '#2A6B7C' }}>
-              List Your Business
+              Directories
             </Link>
           </div>
         </div>
@@ -875,7 +1084,8 @@ function Hero() {
                 className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0 ${
                   activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
                 }`}>
-                <span className="text-sm sm:text-base">{tab.icon}</span>
+                <span className="inline-block rounded-full flex-shrink-0"
+                  style={{ width: '6px', height: '6px', background: '#E8731A' }} />
                 <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
@@ -949,6 +1159,8 @@ function Hero() {
           </div>
         </div>
       </section>
+
+
     </>
   )
 }

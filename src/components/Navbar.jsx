@@ -293,7 +293,7 @@ export default function Navbar() {
             Contact
           </p>
           <div className="space-y-2">
-            <a href="tel:+256700000000"
+            <a href="tel:+256758770888"
               className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
               style={{ textDecoration: 'none' }}
             >
@@ -305,7 +305,7 @@ export default function Navbar() {
               </div>
               <div>
                 <p className="text-xs text-gray-400">Call us</p>
-                <p className="text-sm font-semibold text-gray-800">+256 700 000 000</p>
+                <p className="text-sm font-semibold text-gray-800">+256 758 770 888</p>
               </div>
             </a>
 
@@ -322,7 +322,7 @@ export default function Navbar() {
               </div>
               <div>
                 <p className="text-xs text-gray-400">Email us</p>
-                <p className="text-sm font-semibold text-gray-800">info@showmeuganda.com</p>
+                <p className="text-sm font-semibold text-gray-800">info@showmeuganda.org</p>
               </div>
             </a>
           </div>
@@ -338,10 +338,10 @@ export default function Navbar() {
             className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 transition-opacity hover:opacity-90"
             style={{ background: '#E8731A', color: 'white', textDecoration: 'none' }}
           >
-            List Your Business
+            Contact Us
           </Link>
           <Link
-            to="/admin/login"
+            to="/directory"
             className="flex items-center justify-center gap-2 w-full rounded-2xl font-bold text-sm py-3.5 transition-colors hover:bg-gray-100"
             style={{ background: '#f5f5f5', color: '#2A6B7C', border: '1px solid #e5e7eb', textDecoration: 'none' }}
           >
@@ -349,7 +349,7 @@ export default function Navbar() {
               <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
             </svg>
-            Admin Login
+            Directory
           </Link>
         </div>
 

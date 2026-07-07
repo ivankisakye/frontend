@@ -24,6 +24,7 @@ import Navbar           from './components/Navbar'
 import Footer           from './components/Footer'
 import ProtectedRoute   from './components/ProtectedRoute'
 import RouteScrollReset from './components/RouteScrollReset'
+import SocialSidebar    from './components/SocialSidebar'
 
 export default function App() {
   return (
@@ -47,6 +48,7 @@ export default function App() {
           <div className="flex flex-col min-h-screen">
             <RouteScrollReset />
             <Navbar />
+            <SocialSidebar />
             <main className="flex-1">
               <Routes>
                 <Route path="/"             element={<Home />}         />

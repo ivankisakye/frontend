@@ -770,14 +770,14 @@ function JoinBanner() {
 function Hero() {
   const [activeTab,    setActiveTab]    = useState('all')
   const [search,       setSearch]       = useState('')
-  const [currentSlide, setCurrentSlide] = useState(0)
   const [heroLoaded,   setHeroLoaded]   = useState(false)
 
+  // ── Card slideshow (below the hero image) ──
   const cardSlides = [
-    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80', credit: 'Bwindi Forest',      bg: '#E8731A', heading: 'Find interesting things to do',    sub: 'Browse thousands of experiences across Uganda.',           btnLabel: 'Explore now',        btnBg: '#2A6B7C', to: '/tours'   },
-    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80',   credit: 'Queen Elizabeth',    bg: '#2A6B7C', heading: 'Find safari tour packages',         sub: "Curated safari experiences across Uganda's finest parks.", btnLabel: 'Explore now',        btnBg: '#E8731A', to: '/tours'   },
+    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80', credit: 'Bwindi Forest',      bg: '#E8731A', heading: 'Find interesting things to do',    sub: 'Browse thousands of experiences across Uganda.',           btnLabel: 'Explore now',        btnBg: '#2A6B7C', to: '/tours'    },
+    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80',   credit: 'Queen Elizabeth',    bg: '#2A6B7C', heading: 'Find safari tour packages',         sub: "Curated safari experiences across Uganda's finest parks.", btnLabel: 'Explore now',        btnBg: '#E8731A', to: '/tours'    },
     { image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80',credit: 'Luxury Lodges',      bg: '#E8731A', heading: 'Find luxury destinations',          sub: "World-class lodges in the heart of Uganda's wild beauty.", btnLabel: 'Explore now',        btnBg: '#2A6B7C', to: '/directory'},
-    { image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&q=80', credit: 'Tourism Facilities', bg: '#2A6B7C', heading: 'List your tourism facilities',     sub: 'Reach thousands of travelers. Add your business today.',   btnLabel: 'List your business', btnBg: '#E8731A', to: '/contact' },
+    { image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&q=80',credit: 'Tourism Facilities', bg: '#2A6B7C', heading: 'List your tourism facilities',     sub: 'Reach thousands of travelers. Add your business today.',   btnLabel: 'List your business', btnBg: '#E8731A', to: '/contact'  },
   ]
 
   const tabs = [
@@ -790,286 +790,269 @@ function Hero() {
 
   const tabRoutes = { all: '/tours', tours: '/tours', hotel: '/directory', events: '/events', news: '/news' }
 
-  const [cardSlide,    setCardSlide]    = useState(0)
-  const [transitioning, setTransitioning] = useState(false)
+  const [cardSlide,     setCardSlide]     = useState(0)
+  const [cardTransing,  setCardTransing]  = useState(false)
 
-  // Hero load animation
+  // ── Full-bleed hero slides ──
+  const heroSlides = [
+    {
+      src:     '/images/cvr.jpg',
+      alt:     'Uganda Safari',
+      heading: 'Unforgettable Adventures',
+      sub:     "Discover curated tours and safari experiences across Uganda's most breathtaking destinations.",
+      cta:     'Explore Now',
+      to:      '/tours',
+    },
+    {
+      src:     'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',
+      alt:     'Gorilla Trekking Bwindi',
+      heading: 'Walk With the Giants',
+      sub:     'Come face to face with mountain gorillas in the heart of Bwindi Impenetrable Forest.',
+      cta:     'Book a Trek',
+      to:      '/tours',
+    },
+    {
+      src:     'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',
+      alt:     'Queen Elizabeth National Park',
+      heading: 'Wildlife Beyond Compare',
+      sub:     "Explore Uganda's most diverse national park — home to lions, elephants, and 600 bird species.",
+      cta:     'View Safaris',
+      to:      '/tours',
+    },
+    {
+      src:     'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',
+      alt:     'Source of the Nile Jinja',
+      heading: 'Follow the Nile',
+      sub:     "From white-water rafting to sunset cruises, Jinja offers adventure at the source of the world's longest river.",
+      cta:     'Discover Jinja',
+      to:      '/tours',
+    },
+  ]
+
+  const [heroSlide,   setHeroSlide]   = useState(0)
+  const [prevSlide,   setPrevSlide]   = useState(null)
+  const [slideTrans,  setSlideTrans]  = useState(false)
+  const [textVisible, setTextVisible] = useState(false)
+
+  // Initial hero load
   useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 100)
+    const t = setTimeout(() => { setHeroLoaded(true); setTextVisible(true) }, 100)
     return () => clearTimeout(t)
   }, [])
 
-  // Slideshow
+  // Card slideshow auto-advance
   useEffect(() => {
     const t = setInterval(() => {
-      setTransitioning(true)
-      setTimeout(() => { setCardSlide(prev => (prev + 1) % cardSlides.length); setTransitioning(false) }, 400)
+      setCardTransing(true)
+      setTimeout(() => { setCardSlide(prev => (prev + 1) % cardSlides.length); setCardTransing(false) }, 400)
     }, 4500)
     return () => clearInterval(t)
   }, [])
 
-  function goTo(i) {
+  // Hero photo auto-advance
+  useEffect(() => {
+    const t = setInterval(() => goNextHero(), 4500)
+    return () => clearInterval(t)
+  }, [heroSlide, slideTrans])
+
+  function goToCard(i) {
     if (i === cardSlide) return
-    setTransitioning(true)
-    setTimeout(() => { setCardSlide(i); setTransitioning(false) }, 400)
+    setCardTransing(true)
+    setTimeout(() => { setCardSlide(i); setCardTransing(false) }, 400)
   }
+
+  function goToHero(next) {
+    if (slideTrans || next === heroSlide) return
+    setTextVisible(false)
+    setTimeout(() => {
+      setPrevSlide(heroSlide)
+      setHeroSlide(next)
+      setSlideTrans(true)
+      setTimeout(() => setTextVisible(true), 220)
+      setTimeout(() => { setPrevSlide(null); setSlideTrans(false) }, 580)
+    }, 280)
+  }
+
+  function goNextHero() { goToHero((heroSlide + 1) % heroSlides.length) }
+  function goPrevHero() { goToHero((heroSlide - 1 + heroSlides.length) % heroSlides.length) }
 
   function handleSearch(e) {
     e.preventDefault()
     window.location.href = tabRoutes[activeTab] + (search ? `?search=${search}` : '')
   }
 
-  const s = cardSlides[cardSlide]
+  const s  = cardSlides[cardSlide]
+  const hs = heroSlides[heroSlide]
 
   return (
     <>
+      {/* ── FULL-BLEED PHOTO HERO ── */}
+      <section className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: '480px', background: '#1a1a1a' }}>
+        <style>{`
+          /* Fade animations for background photos */
+          @keyframes heroFadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+          }
+          @keyframes heroFadeOut {
+            from { opacity: 1; }
+            to   { opacity: 0; }
+          }
+          /* Text animations */
+          @keyframes heroTextIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes heroTextOut {
+            from { opacity: 1; transform: translateY(0); }
+            to   { opacity: 0; transform: translateY(-10px); }
+          }
+          .hero-fade-in  { animation: heroFadeIn  0.8s ease forwards; }
+          .hero-fade-out { animation: heroFadeOut 0.3s ease forwards; }
+          .hero-text-in  { animation: heroTextIn  0.55s ease forwards; }
+          .hero-text-out { animation: heroTextOut 0.28s ease forwards; }
+        `}</style>
+
+        {/* Overlay component */}
+        {(() => {
+          const Overlay = () => (
+            <>
+              <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)', zIndex: 1 }}/>
+              <div className="absolute inset-0" style={{
+                background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.70) 100%)',
+                zIndex: 2,
+              }}/>
+            </>
+          )
+
+          return (
+            <>
+              {/* Current photo - always visible */}
+              <div
+                key={`curr-${heroSlide}`}
+                className="absolute inset-0"
+                style={{ zIndex: 3 }}
+              >
+                <img src={hs.src} alt={hs.alt}
+                  className="absolute inset-0 w-full h-full object-cover"/>
+                <Overlay/>
+              </div>
+
+              {/* Outgoing photo - fades out */}
+              {prevSlide !== null && (
+                <div
+                  key={`prev-${prevSlide}`}
+                  className="absolute inset-0 hero-fade-out"
+                  style={{ zIndex: 4 }}
+                >
+                  <img src={heroSlides[prevSlide].src} alt={heroSlides[prevSlide].alt}
+                    className="absolute inset-0 w-full h-full object-cover"/>
+                  <Overlay/>
+                </div>
+              )}
+
+              {/* Incoming photo - fades in on top */}
+              {prevSlide !== null && (
+                <div
+                  key={`new-${heroSlide}`}
+                  className="absolute inset-0 hero-fade-in"
+                  style={{ zIndex: 5 }}
+                >
+                  <img src={hs.src} alt={hs.alt}
+                    className="absolute inset-0 w-full h-full object-cover"/>
+                  <Overlay/>
+                </div>
+              )}
+
+              {/* Text */}
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+                style={{ zIndex: 20 }}
+              >
+                <div
+                  key={`text-${heroSlide}`}
+                  className={textVisible ? 'hero-text-in' : 'hero-text-out'}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                >
+                  <h1
+                    className="font-black text-white leading-tight mb-5"
+                    style={{
+                      fontSize:   'clamp(2.1rem, 9vw, 5rem)',
+                      textShadow: '0 2px 32px rgba(0,0,0,0.7)',
+                    }}
+                  >
+                    {(() => {
+                      const words = hs.heading.split(' ')
+                      const mid   = Math.ceil(words.length / 2)
+                      return (
+                        <>
+                          {words.slice(0, mid).join(' ')}<br/>
+                          {words.slice(mid).join(' ')}
+                        </>
+                      )
+                    })()}
+                  </h1>
+
+                  <p
+                    className="text-white/90 mb-8 max-w-lg leading-relaxed"
+                    style={{
+                      fontSize:   'clamp(0.9rem, 2.4vw, 1.15rem)',
+                      textShadow: '0 1px 12px rgba(0,0,0,0.6)',
+                    }}
+                  >
+                    {hs.sub}
+                  </p>
+
+                  <Link
+                    to={hs.to}
+                    className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
+                    style={{ background: '#E8731A', fontSize: '0.9rem' }}
+                  >
+                    {hs.cta}
+                  </Link>
+                </div>
+              </div>
+
+              {/* Arrows - smaller */}
+              <button onClick={goPrevHero}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
+                </svg>
+              </button>
+
+              <button onClick={goNextHero}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
+                </svg>
+              </button>
+
+              {/* Dots */}
+              <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2" style={{ zIndex: 20 }}>
+                {heroSlides.map((_, i) => (
+                  <button key={i} onClick={() => goToHero(i)}
+                    className="rounded-full transition-all duration-300"
+                    style={{
+                      width:      heroSlide === i ? '28px' : '8px',
+                      height:     '8px',
+                      background: heroSlide === i ? '#E8731A' : 'rgba(255,255,255,0.55)',
+                    }}/>
+                ))}
+              </div>
 
 
 
-
-    
-      {/* ── FULL-BLEED PHOTO HERO — Sliding ── */}
-<section className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: '480px' }}>
-
-  <style>{`
-    @keyframes slideInRight {
-      from { transform: translateX(100%); }
-      to   { transform: translateX(0);    }
-    }
-    @keyframes slideOutLeft {
-      from { transform: translateX(0);     }
-      to   { transform: translateX(-100%); }
-    }
-    @keyframes slideInLeft {
-      from { transform: translateX(-100%); }
-      to   { transform: translateX(0);     }
-    }
-    @keyframes slideOutRight {
-      from { transform: translateX(0);    }
-      to   { transform: translateX(100%); }
-    }
-    .slide-enter-right { animation: slideInRight  0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
-    .slide-exit-left   { animation: slideOutLeft  0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
-    .slide-enter-left  { animation: slideInLeft   0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
-    .slide-exit-right  { animation: slideOutRight 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
-  `}</style>
-
-  {(() => {
-    const heroSlides = [
-      { src: '/images/cvr.jpg',                                                              alt: 'Uganda Safari',               label: 'Pearl of Africa'    },
-      { src: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',    alt: 'Gorilla Trekking Bwindi',     label: 'Bwindi Forest'      },
-      { src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',       alt: 'Queen Elizabeth National Park',label: 'Queen Elizabeth Park'},
-      { src: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',   alt: 'Source of the Nile Jinja',    label: 'Source of the Nile' },
-    ]
-
-    const [heroSlide,     setHeroSlide]     = useState(0)
-    const [prevSlide,     setPrevSlide]     = useState(null)
-    const [direction,     setDirection]     = useState('right')
-    const [transitioning, setTransitioning] = useState(false)
-
-    function goTo(next) {
-      if (transitioning || next === heroSlide) return
-      setDirection(next > heroSlide ? 'right' : 'left')
-      setPrevSlide(heroSlide)
-      setHeroSlide(next)
-      setTransitioning(true)
-      setTimeout(() => { setPrevSlide(null); setTransitioning(false) }, 580)
-    }
-
-    function goNext() { goTo((heroSlide + 1) % heroSlides.length) }
-    function goPrev() { goTo((heroSlide - 1 + heroSlides.length) % heroSlides.length) }
-
-    useEffect(() => {
-      const t = setInterval(goNext, 4000)
-      return () => clearInterval(t)
-    }, [heroSlide, transitioning])
-
-    // ── single overlay used on every slide ──────────────────────────────────
-    // Two layers stacked:
-    // 1. A solid dark base at 40% opacity — covers the whole image evenly
-    // 2. A gradient that adds extra darkness at top and bottom
-    const Overlay = () => (
-      <>
-        {/* Base dark veil — this is the main change, evenly darkens whole image */}
-        <div
-          className="absolute inset-0"
-          style={{ background: 'rgba(0,0,0,0.42)', zIndex: 1 }}
-        />
-        {/* Gradient on top — extra dark at edges, lighter in centre */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.70) 100%)',
-            zIndex: 2,
-          }}
-        />
-      </>
-    )
-
-    return (
-      <>
-        {/* ── Outgoing slide ── */}
-        {prevSlide !== null && (
-          <div
-            key={`prev-${prevSlide}`}
-            className={`absolute inset-0 ${direction === 'right' ? 'slide-exit-left' : 'slide-exit-right'}`}
-            style={{ zIndex: 3 }}
-          >
-            <img
-              src={heroSlides[prevSlide].src}
-              alt={heroSlides[prevSlide].alt}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <Overlay />
-          </div>
-        )}
-
-        {/* ── Incoming slide ── */}
-        <div
-          key={`curr-${heroSlide}`}
-          className={`absolute inset-0 ${prevSlide !== null ? (direction === 'right' ? 'slide-enter-right' : 'slide-enter-left') : ''}`}
-          style={{ zIndex: 4 }}
-        >
-          <img
-            src={heroSlides[heroSlide].src}
-            alt={heroSlides[heroSlide].alt}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <Overlay />
-        </div>
-
-        {/* ── Text — sits above everything ── */}
-        <div
-          className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
-          style={{ zIndex: 20 }}
-        >
-          {/* Location label */}
-          <div
-            className="flex items-center gap-2 mb-4"
-            style={{
-              opacity:    heroLoaded ? 1 : 0,
-              transform:  heroLoaded ? 'none' : 'translateY(20px)',
-              transition: 'opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s',
-            }}
-          >
-            <span className="text-xs font-bold uppercase tracking-widest text-white/80">
-              ✦ ShowMeUganda
-            </span>
-            <span
-              className="text-xs font-bold px-2.5 py-1 rounded-full text-white"
-              style={{ background: 'rgba(232,115,26,0.85)', backdropFilter: 'blur(8px)' }}
-            >
-              📍 {heroSlides[heroSlide].label}
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1
-            className="font-black text-white leading-tight mb-5"
-            style={{
-              fontSize:   'clamp(2.1rem, 9vw, 5rem)',
-              textShadow: '0 2px 32px rgba(0,0,0,0.7)',
-              opacity:    heroLoaded ? 1 : 0,
-              transform:  heroLoaded ? 'none' : 'translateY(35px)',
-              transition: 'opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s',
-            }}
-          >
-            Unforgettable<br />Adventures
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            className="text-white/90 mb-8 max-w-lg leading-relaxed"
-            style={{
-              fontSize:   'clamp(0.9rem, 2.4vw, 1.15rem)',
-              textShadow: '0 1px 12px rgba(0,0,0,0.6)',
-              opacity:    heroLoaded ? 1 : 0,
-              transform:  heroLoaded ? 'none' : 'translateY(25px)',
-              transition: 'opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s',
-            }}
-          >
-            Discover curated tours and safari experiences designed to create
-            lasting memories across breathtaking destinations.
-          </p>
-
-          {/* CTA */}
-          <div
-            style={{
-              opacity:    heroLoaded ? 1 : 0,
-              transform:  heroLoaded ? 'none' : 'translateY(20px) scale(0.95)',
-              transition: 'opacity 0.8s ease 0.7s, transform 0.8s ease 0.7s',
-            }}
-          >
-            <Link
-              to="/tours"
-              className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
-              style={{ background: '#E8731A', fontSize: '0.9rem' }}
-            >
-              Explore Now
-            </Link>
-          </div>
-        </div>
-
-        {/* ── Prev arrow ── */}
-        <button
-          onClick={goPrev}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}
-        >
-          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
-          </svg>
-        </button>
-
-        {/* ── Next arrow ── */}
-        <button
-          onClick={goNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-          style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}
-        >
-          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
-
-        {/* ── Dots ── */}
-        <div
-          className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2"
-          style={{ zIndex: 20 }}
-        >
-          {heroSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => goTo(i)}
-              className="rounded-full transition-all duration-300"
-              style={{
-                width:      heroSlide === i ? '28px' : '8px',
-                height:     '8px',
-                background: heroSlide === i ? '#E8731A' : 'rgba(255,255,255,0.55)',
-              }}
-            />
-          ))}
-        </div>
-
-        {/* ── Scroll indicator ── */}
-        <div
-          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/70"
-          style={{ zIndex: 20, opacity: heroLoaded ? 1 : 0, transition: 'opacity 1s ease 1.2s' }}
-        >
-          <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-
-      </>
-    )
-  })()}
-</section>
+              {/* Scroll indicator */}
+              
 
 
-
-
-
+            </>
+          )
+        })()}
+      </section>
 
       {/* ── WHERE TO? SEARCH SECTION ── */}
       <section className="bg-white">
@@ -1130,7 +1113,7 @@ function Hero() {
               {/* Dots */}
               <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 flex gap-1.5 z-10">
                 {cardSlides.map((_, i) => (
-                  <button key={i} onClick={() => goTo(i)} className="rounded-full transition-all"
+                  <button key={i} onClick={() => goToCard(i)} className="rounded-full transition-all"
                     style={{ width: cardSlide === i ? '20px' : '8px', height: '8px',
                       background: cardSlide === i ? 'white' : 'rgba(255,255,255,0.5)' }} />
                 ))}
@@ -1140,8 +1123,8 @@ function Hero() {
             {/* Right text */}
             <div className="md:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 md:p-12 text-center">
               <div style={{
-                opacity:    transitioning ? 0 : 1,
-                transform:  transitioning ? 'translateY(12px)' : 'translateY(0)',
+                opacity:    cardTransing ? 0 : 1,
+                transform:  cardTransing ? 'translateY(12px)' : 'translateY(0)',
                 transition: 'opacity 0.4s ease, transform 0.4s ease',
               }}>
                 <h2 className="font-black leading-tight mb-3 sm:mb-4 text-white"
@@ -1159,11 +1142,16 @@ function Hero() {
           </div>
         </div>
       </section>
-
-
     </>
   )
 }
+
+
+
+
+
+
+
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
 export default function Home() {

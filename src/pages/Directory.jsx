@@ -45,7 +45,7 @@ function Stars({ rating }) {
 function FeaturedHotelCard({ post }) {
   const [saved, setSaved] = useState(false)
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/directory'
+  const to = isReal ? `/post/${post.slug}` : '/directory'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (
@@ -147,7 +147,7 @@ function FeaturedHotelCard({ post }) {
 function HotelCard({ post }) {
   const [saved, setSaved] = useState(false)
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/directory'
+  const to = isReal ? `/post/${post.slug}` : '/directory'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (

@@ -114,7 +114,7 @@ function TourCard({ post, delay = 0 }) {
   const [liked, setLiked] = useState(false)
   const [ref, inView] = useInView()
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/tours'
+  const to = isReal ? `/post/${post.slug}` : '/tours'
 
   return (
     <div
@@ -168,7 +168,7 @@ function HotelCard({ post, delay = 0 }) {
   const [liked, setLiked] = useState(false)
   const [ref, inView] = useInView()
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/directory'
+  const to = isReal ? `/post/${post.slug}` : '/directory'
 
   return (
     <div
@@ -220,7 +220,7 @@ function HotelCard({ post, delay = 0 }) {
 // ─── News Card ────────────────────────────────────────────────────────────────
 function NewsCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/news'
+  const to = isReal ? `/post/${post.slug}` : '/news'
   return (
     <Link to={to} className="group flex gap-3 sm:gap-4 items-start hover:bg-gray-50 rounded-2xl p-2 transition-colors">
       <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-xl overflow-hidden">
@@ -243,7 +243,7 @@ function NewsCard({ post }) {
 // ─── Event Card ───────────────────────────────────────────────────────────────
 function EventCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/events'
+  const to = isReal ? `/post/${post.slug}` : '/events'
   return (
     <Link to={to} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -386,7 +386,7 @@ function InspirationSection({ posts }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {display.map((post, i) => {
             const isReal = typeof post.id === 'number'
-            const to = isReal ? `/post/${post.id}` : '/news'
+            const to = isReal ? `/post/${post.slug}` : '/news'
             return (
               <Reveal key={post.id || i} delay={i * 120} direction="up">
                 <Link to={to} className="group block">
@@ -666,8 +666,9 @@ function DestinationsSection() {
 
 
 
-
+// ─── where >>>>News + Events>>>>>was ────────────────────────────────────────────────────────────
 // ─── News + Events ────────────────────────────────────────────────────────────
+
 function NewsAndEvents({ news, events }) {
   return (
     <section className="py-8 sm:py-10" style={{ background: '#f8f8f8' }}>
@@ -1054,6 +1055,9 @@ function Hero() {
         })()}
       </section>
 
+
+      
+
       {/* ── WHERE TO? SEARCH SECTION ── */}
       <section className="bg-white">
         <div className="max-w-4xl mx-auto px-4 pt-8 sm:pt-10 pb-6 sm:pb-8 text-center">
@@ -1189,6 +1193,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <Hero />
+      <NewsAndEvents
+        news={merge(liveNews, PLACEHOLDER_NEWS, 3)}
+        events={merge(liveEvents, PLACEHOLDER_EVENTS, 3)}
+      />
       <CategoryImageGrid />
 
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -1213,10 +1221,7 @@ export default function Home() {
 
 
       <DestinationsSection />
-      <NewsAndEvents
-        news={merge(liveNews,   PLACEHOLDER_NEWS,   3)}
-        events={merge(liveEvents, PLACEHOLDER_EVENTS, 3)}
-      />
+      
       <CommunityBanner />
 
         <div className="sm:hidden px-4 py-3">

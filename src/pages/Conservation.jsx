@@ -43,7 +43,7 @@ const TAG_COLORS = {
 // ─── Featured Article (big) ───────────────────────────────────────────────────
 function FeaturedConservationCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/conservation'
+  const to = isReal ? `/post/${post.slug}` : '/conservation'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (
@@ -91,7 +91,7 @@ function FeaturedConservationCard({ post }) {
 // ─── Conservation Article Card ────────────────────────────────────────────────
 function ConservationCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/conservation'
+  const to = isReal ? `/post/${post.slug}` : '/conservation'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (

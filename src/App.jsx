@@ -61,7 +61,9 @@ export default function App() {
                 <Route path="/about"        element={<About />}        />
                 <Route path="/gallery"      element={<Gallery />}      />
                 <Route path="/whatsapp"     element={<WhatsApp />}     />
-                <Route path="/post/:id"     element={<SinglePost />}   />
+
+                <Route path="/post/:slug" element={<SinglePost />} />
+
               </Routes>
             </main>
             <Footer />

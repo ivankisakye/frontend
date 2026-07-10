@@ -74,15 +74,20 @@ export default function Navbar() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex items-center justify-between h-16">
 
+
+
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0 group">
               <img
-                src="/logo2.png"
+                src={scrolled ? "/logo.png" : "/logo2.png"}
                 alt="Show Me Uganda"
                 className="h-12 w-auto object-contain transition-transform group-hover:scale-105"
                 style={{ filter: scrolled ? 'none' : 'drop-shadow(0 1px 4px rgba(0,0,0,0.4))' }}
               />
             </Link>
+
+
+
 
             {/* Desktop Nav */}
             <div className="hidden md:flex items-center gap-1">
@@ -191,7 +196,9 @@ export default function Navbar() {
         <div className="flex items-center justify-between px-5 py-4 flex-shrink-0"
           style={{ borderBottom: '1px solid #f0f0f0' }}>
           <div className="flex items-center gap-3">
-            <img src="/logo2.png" alt="ShowMeUganda" className="h-9 w-auto object-contain" />
+
+            <img src={scrolled ? "/logo.png" : "/logo2.png"} alt="ShowMeUganda" className="h-9 w-auto object-contain" />
+
           </div>
           <div className="flex items-center gap-3">
             {/* Live time */}

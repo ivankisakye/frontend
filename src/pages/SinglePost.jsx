@@ -330,7 +330,7 @@ function Skeleton() {
 
 // ─── MAIN SinglePost PAGE ─────────────────────────────────────────────────────
 export default function SinglePost() {
-  const { id } = useParams()
+  const { slug } = useParams()
   const navigate = useNavigate()
 
   const [post, setPost] = useState(null)
@@ -345,7 +345,7 @@ export default function SinglePost() {
 
     async function load() {
       try {
-        const res = await apiClient.get(`/posts/${id}`)
+        const res = await apiClient.get(`/posts/slug/${slug}`)
         const p = res.data
         setPost(p)
 
@@ -360,7 +360,7 @@ export default function SinglePost() {
       }
     }
     load()
-  }, [id])
+  }, [slug])
 
   if (loading) return <Skeleton />
 

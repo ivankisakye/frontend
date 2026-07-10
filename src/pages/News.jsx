@@ -24,7 +24,7 @@ const TRENDING = [
 // ─── Featured Article (big card) ─────────────────────────────────────────────
 function FeaturedCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/news'
+  const to = isReal ? `/post/${post.slug}` : '/news'
   return (
     <Link to={to} className="group block">
       <div className="relative rounded-3xl overflow-hidden h-80 md:h-96">
@@ -62,7 +62,7 @@ function FeaturedCard({ post }) {
 // ─── Standard News Card ───────────────────────────────────────────────────────
 function NewsCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/news'
+  const to = isReal ? `/post/${post.slug}` : '/news'
   return (
     <Link to={to} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 h-full">
@@ -101,7 +101,7 @@ function NewsCard({ post }) {
 // ─── Horizontal News Card (for list view) ────────────────────────────────────
 function NewsListCard({ post, index }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/news'
+  const to = isReal ? `/post/${post.slug}` : '/news'
   return (
     <Link to={to} className="group flex gap-4 items-start p-4 rounded-2xl hover:bg-gray-50 transition-colors border border-gray-100 bg-white">
       <div className="text-2xl font-black flex-shrink-0 w-8 text-center"

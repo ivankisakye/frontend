@@ -35,7 +35,7 @@ const TAG_COLORS = {
 // ─── Featured Event Card (big) ────────────────────────────────────────────────
 function FeaturedEventCard({ post }) {
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/events'
+  const to = isReal ? `/post/${post.slug}` : '/events'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (
@@ -100,7 +100,7 @@ function FeaturedEventCard({ post }) {
 function EventCard({ post }) {
   const [saved, setSaved] = useState(false)
   const isReal = typeof post.id === 'number'
-  const to = isReal ? `/post/${post.id}` : '/events'
+  const to = isReal ? `/post/${post.slug}` : '/events'
   const tagColor = TAG_COLORS[post.tag] || { bg: '#f3f4f6', color: '#6b7280' }
 
   return (

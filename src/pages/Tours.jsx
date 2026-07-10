@@ -45,7 +45,7 @@ function TourCard({ post }) {
   const [liked, setLiked] = useState(false)
 
   return (
-    <Link to={`/post/${post.id}`} className="group block">
+    <Link to={`/post/${post.slug}`} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
 
         {/* Image */}

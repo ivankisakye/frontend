@@ -7,6 +7,7 @@ const links = [
   { to: '/tours',         label: 'Tour Packages',           icon: '📰', desc: 'Latest updates from across Uganda'      },
   { to: '/conservation', label: 'Destinations',   icon: '🗺️', desc: 'Explore amazing places in Uganda'      },
   { to: '/events',       label: 'Events',         icon: '🥁', desc: 'Festivals, concerts & cultural shows'   },
+  { to: '/shop',       label: 'Shop',         icon: '🥁', desc: 'Shop with us today'   },
   
 ]
 
@@ -16,6 +17,9 @@ const destinations = [
   { name: 'Lake Victoria',   region: 'Central'    },
   { name: 'Queen Elizabeth', region: 'West'       },
 ]
+
+
+
 
 export default function Navbar() {
   const [open,     setOpen]     = useState(false)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const WHATSAPP_NUMBER = '256705495970'
+const WHATSAPP_NUMBER = '256758770888'
 const WHATSAPP_DEFAULT_MESSAGE = 'Hello! I found you on ShowMeUganda.com and I would like to enquire about your tours and services.'
 
 // ─── Quick reply options ──────────────────────────────────────────────────────
@@ -339,8 +339,8 @@ export default function WhatsApp() {
           <h2 className="font-black text-gray-900 text-base mb-4">Other ways to reach us</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { icon: '📞', label: 'Call us',   value: '+256 700 000 000',       href: 'tel:+256700000000'                        },
-              { icon: '📧', label: 'Email us',  value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.com'             },
+              { icon: '📞', label: 'Call us',   value: '+256 758 770 888',       href: 'tel:+256758770888'                        },
+              { icon: '📧', label: 'Email us',  value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.org'             },
               { icon: '📍', label: 'Visit us',  value: 'Kampala, Uganda',        href: 'https://maps.google.com/?q=Kampala,Uganda'},
             ].map((item) => (
               <a

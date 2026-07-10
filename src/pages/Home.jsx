@@ -769,70 +769,47 @@ function JoinBanner() {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
-  const [activeTab,    setActiveTab]    = useState('all')
-  const [search,       setSearch]       = useState('')
-  const [heroLoaded,   setHeroLoaded]   = useState(false)
-
-  // ── Card slideshow (below the hero image) ──
-  const cardSlides = [
-    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80', credit: 'Bwindi Forest',      bg: '#E8731A', heading: 'Find interesting things to do',    sub: 'Browse thousands of experiences across Uganda.',           btnLabel: 'Explore now',        btnBg: '#2A6B7C', to: '/tours'    },
-    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80',   credit: 'Queen Elizabeth',    bg: '#2A6B7C', heading: 'Find safari tour packages',         sub: "Curated safari experiences across Uganda's finest parks.", btnLabel: 'Explore now',        btnBg: '#E8731A', to: '/tours'    },
-    { image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80',credit: 'Luxury Lodges',      bg: '#E8731A', heading: 'Find luxury destinations',          sub: "World-class lodges in the heart of Uganda's wild beauty.", btnLabel: 'Explore now',        btnBg: '#2A6B7C', to: '/directory'},
-    { image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&q=80',credit: 'Tourism Facilities', bg: '#2A6B7C', heading: 'List your tourism facilities',     sub: 'Reach thousands of travelers. Add your business today.',   btnLabel: 'List your business', btnBg: '#E8731A', to: '/contact'  },
-  ]
-
-  const tabs = [
-    { key: 'all',    label: 'Search All',   icon: '🏠' },
-    { key: 'tours',  label: 'Things to Do', icon: '🦍' },
-    { key: 'hotel',  label: 'Hotels',       icon: '🏨' },
-    { key: 'events', label: 'Events',       icon: '🎉' },
-    { key: 'news',   label: 'News',         icon: '📰' },
-  ]
-
-  const tabRoutes = { all: '/tours', tours: '/tours', hotel: '/directory', events: '/events', news: '/news' }
-
-  const [cardSlide,     setCardSlide]     = useState(0)
-  const [cardTransing,  setCardTransing]  = useState(false)
+  const [heroLoaded, setHeroLoaded] = useState(false)
 
   // ── Full-bleed hero slides ──
   const heroSlides = [
     {
-      src:     '/images/cvr.jpg',
-      alt:     'Uganda Safari',
+      src: '/images/cvr.jpg',
+      alt: 'Uganda Safari',
       heading: 'Unforgettable Adventures',
-      sub:     "Discover curated tours and safari experiences across Uganda's most breathtaking destinations.",
-      cta:     'Explore Now',
-      to:      '/tours',
+      sub: "Discover curated tours and safari experiences across Uganda's most breathtaking destinations.",
+      cta: 'Explore Now',
+      to: '/tours',
     },
     {
-      src:     'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',
-      alt:     'Gorilla Trekking Bwindi',
+      src: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',
+      alt: 'Gorilla Trekking Bwindi',
       heading: 'Walk With the Giants',
-      sub:     'Come face to face with mountain gorillas in the heart of Bwindi Impenetrable Forest.',
-      cta:     'Book a Trek',
-      to:      '/tours',
+      sub: 'Come face to face with mountain gorillas in the heart of Bwindi Impenetrable Forest.',
+      cta: 'Book a Trek',
+      to: '/tours',
     },
     {
-      src:     'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',
-      alt:     'Queen Elizabeth National Park',
+      src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',
+      alt: 'Queen Elizabeth National Park',
       heading: 'Wildlife Beyond Compare',
-      sub:     "Explore Uganda's most diverse national park — home to lions, elephants, and 600 bird species.",
-      cta:     'View Safaris',
-      to:      '/tours',
+      sub: "Explore Uganda's most diverse national park — home to lions, elephants, and 600 bird species.",
+      cta: 'View Safaris',
+      to: '/tours',
     },
     {
-      src:     'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',
-      alt:     'Source of the Nile Jinja',
+      src: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',
+      alt: 'Source of the Nile Jinja',
       heading: 'Follow the Nile',
-      sub:     "From white-water rafting to sunset cruises, Jinja offers adventure at the source of the world's longest river.",
-      cta:     'Discover Jinja',
-      to:      '/tours',
+      sub: "From white-water rafting to sunset cruises, Jinja offers adventure at the source of the world's longest river.",
+      cta: 'Discover Jinja',
+      to: '/tours',
     },
   ]
 
-  const [heroSlide,   setHeroSlide]   = useState(0)
-  const [prevSlide,   setPrevSlide]   = useState(null)
-  const [slideTrans,  setSlideTrans]  = useState(false)
+  const [heroSlide, setHeroSlide] = useState(0)
+  const [prevSlide, setPrevSlide] = useState(null)
+  const [slideTrans, setSlideTrans] = useState(false)
   const [textVisible, setTextVisible] = useState(false)
 
   // Initial hero load
@@ -841,26 +818,11 @@ function Hero() {
     return () => clearTimeout(t)
   }, [])
 
-  // Card slideshow auto-advance
-  useEffect(() => {
-    const t = setInterval(() => {
-      setCardTransing(true)
-      setTimeout(() => { setCardSlide(prev => (prev + 1) % cardSlides.length); setCardTransing(false) }, 400)
-    }, 4500)
-    return () => clearInterval(t)
-  }, [])
-
   // Hero photo auto-advance
   useEffect(() => {
     const t = setInterval(() => goNextHero(), 4500)
     return () => clearInterval(t)
   }, [heroSlide, slideTrans])
-
-  function goToCard(i) {
-    if (i === cardSlide) return
-    setCardTransing(true)
-    setTimeout(() => { setCardSlide(i); setCardTransing(false) }, 400)
-  }
 
   function goToHero(next) {
     if (slideTrans || next === heroSlide) return
@@ -877,279 +839,314 @@ function Hero() {
   function goNextHero() { goToHero((heroSlide + 1) % heroSlides.length) }
   function goPrevHero() { goToHero((heroSlide - 1 + heroSlides.length) % heroSlides.length) }
 
-  function handleSearch(e) {
-    e.preventDefault()
-    window.location.href = tabRoutes[activeTab] + (search ? `?search=${search}` : '')
-  }
-
-  const s  = cardSlides[cardSlide]
   const hs = heroSlides[heroSlide]
 
   return (
-    <>
-      {/* ── FULL-BLEED PHOTO HERO ── */}
-      <section className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: '480px', background: '#1a1a1a' }}>
-        <style>{`
-          /* Fade animations for background photos */
-          @keyframes heroFadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-          }
-          @keyframes heroFadeOut {
-            from { opacity: 1; }
-            to   { opacity: 0; }
-          }
-          /* Text animations */
-          @keyframes heroTextIn {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-          }
-          @keyframes heroTextOut {
-            from { opacity: 1; transform: translateY(0); }
-            to   { opacity: 0; transform: translateY(-10px); }
-          }
-          .hero-fade-in  { animation: heroFadeIn  0.8s ease forwards; }
-          .hero-fade-out { animation: heroFadeOut 0.3s ease forwards; }
-          .hero-text-in  { animation: heroTextIn  0.55s ease forwards; }
-          .hero-text-out { animation: heroTextOut 0.28s ease forwards; }
-        `}</style>
+    <section className="relative w-full overflow-hidden" style={{ height: '92vh', minHeight: '480px', background: '#1a1a1a' }}>
+      <style>{`
+        /* Fade animations for background photos */
+        @keyframes heroFadeIn {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+        @keyframes heroFadeOut {
+          from { opacity: 1; }
+          to   { opacity: 0; }
+        }
+        /* Text animations */
+        @keyframes heroTextIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes heroTextOut {
+          from { opacity: 1; transform: translateY(0); }
+          to   { opacity: 0; transform: translateY(-10px); }
+        }
+        .hero-fade-in  { animation: heroFadeIn  0.8s ease forwards; }
+        .hero-fade-out { animation: heroFadeOut 0.3s ease forwards; }
+        .hero-text-in  { animation: heroTextIn  0.55s ease forwards; }
+        .hero-text-out { animation: heroTextOut 0.28s ease forwards; }
+      `}</style>
 
-        {/* Overlay component */}
-        {(() => {
-          const Overlay = () => (
-            <>
-              <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)', zIndex: 1 }}/>
-              <div className="absolute inset-0" style={{
-                background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.70) 100%)',
-                zIndex: 2,
-              }}/>
-            </>
-          )
+      {/* Overlay component */}
+      {(() => {
+        const Overlay = () => (
+          <>
+            <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.42)', zIndex: 1 }}/>
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.08) 65%, rgba(0,0,0,0.70) 100%)',
+              zIndex: 2,
+            }}/>
+          </>
+        )
 
-          return (
-            <>
-              {/* Current photo - always visible */}
+        return (
+          <>
+            {/* Current photo - always visible */}
+            <div
+              key={`curr-${heroSlide}`}
+              className="absolute inset-0"
+              style={{ zIndex: 3 }}
+            >
+              <img src={hs.src} alt={hs.alt}
+                className="absolute inset-0 w-full h-full object-cover"/>
+              <Overlay/>
+            </div>
+
+            {/* Outgoing photo - fades out */}
+            {prevSlide !== null && (
               <div
-                key={`curr-${heroSlide}`}
-                className="absolute inset-0"
-                style={{ zIndex: 3 }}
+                key={`prev-${prevSlide}`}
+                className="absolute inset-0 hero-fade-out"
+                style={{ zIndex: 4 }}
+              >
+                <img src={heroSlides[prevSlide].src} alt={heroSlides[prevSlide].alt}
+                  className="absolute inset-0 w-full h-full object-cover"/>
+                <Overlay/>
+              </div>
+            )}
+
+            {/* Incoming photo - fades in on top */}
+            {prevSlide !== null && (
+              <div
+                key={`new-${heroSlide}`}
+                className="absolute inset-0 hero-fade-in"
+                style={{ zIndex: 5 }}
               >
                 <img src={hs.src} alt={hs.alt}
                   className="absolute inset-0 w-full h-full object-cover"/>
                 <Overlay/>
               </div>
+            )}
 
-              {/* Outgoing photo - fades out */}
-              {prevSlide !== null && (
-                <div
-                  key={`prev-${prevSlide}`}
-                  className="absolute inset-0 hero-fade-out"
-                  style={{ zIndex: 4 }}
-                >
-                  <img src={heroSlides[prevSlide].src} alt={heroSlides[prevSlide].alt}
-                    className="absolute inset-0 w-full h-full object-cover"/>
-                  <Overlay/>
-                </div>
-              )}
-
-              {/* Incoming photo - fades in on top */}
-              {prevSlide !== null && (
-                <div
-                  key={`new-${heroSlide}`}
-                  className="absolute inset-0 hero-fade-in"
-                  style={{ zIndex: 5 }}
-                >
-                  <img src={hs.src} alt={hs.alt}
-                    className="absolute inset-0 w-full h-full object-cover"/>
-                  <Overlay/>
-                </div>
-              )}
-
-              {/* Text */}
+            {/* Text */}
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+              style={{ zIndex: 20 }}
+            >
               <div
-                className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
-                style={{ zIndex: 20 }}
+                key={`text-${heroSlide}`}
+                className={textVisible ? 'hero-text-in' : 'hero-text-out'}
+                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
               >
-                <div
-                  key={`text-${heroSlide}`}
-                  className={textVisible ? 'hero-text-in' : 'hero-text-out'}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                <h1
+                  className="font-black text-white leading-tight mb-5"
+                  style={{
+                    fontSize: 'clamp(2.1rem, 9vw, 5rem)',
+                    textShadow: '0 2px 32px rgba(0,0,0,0.7)',
+                  }}
                 >
-                  <h1
-                    className="font-black text-white leading-tight mb-5"
-                    style={{
-                      fontSize:   'clamp(2.1rem, 9vw, 5rem)',
-                      textShadow: '0 2px 32px rgba(0,0,0,0.7)',
-                    }}
-                  >
-                    {(() => {
-                      const words = hs.heading.split(' ')
-                      const mid   = Math.ceil(words.length / 2)
-                      return (
-                        <>
-                          {words.slice(0, mid).join(' ')}<br/>
-                          {words.slice(mid).join(' ')}
-                        </>
-                      )
-                    })()}
-                  </h1>
+                  {(() => {
+                    const words = hs.heading.split(' ')
+                    const mid = Math.ceil(words.length / 2)
+                    return (
+                      <>
+                        {words.slice(0, mid).join(' ')}<br/>
+                        {words.slice(mid).join(' ')}
+                      </>
+                    )
+                  })()}
+                </h1>
 
-                  <p
-                    className="text-white/90 mb-8 max-w-lg leading-relaxed"
-                    style={{
-                      fontSize:   'clamp(0.9rem, 2.4vw, 1.15rem)',
-                      textShadow: '0 1px 12px rgba(0,0,0,0.6)',
-                    }}
-                  >
-                    {hs.sub}
-                  </p>
+                <p
+                  className="text-white/90 mb-8 max-w-lg leading-relaxed"
+                  style={{
+                    fontSize: 'clamp(0.9rem, 2.4vw, 1.15rem)',
+                    textShadow: '0 1px 12px rgba(0,0,0,0.6)',
+                  }}
+                >
+                  {hs.sub}
+                </p>
 
-                  <Link
-                    to={hs.to}
-                    className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
-                    style={{ background: '#E8731A', fontSize: '0.9rem' }}
-                  >
-                    {hs.cta}
-                  </Link>
-                </div>
-              </div>
-
-              {/* Arrows - smaller */}
-              <button onClick={goPrevHero}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-                style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
-                </svg>
-              </button>
-
-              <button onClick={goNextHero}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
-                style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
-                </svg>
-              </button>
-
-              {/* Dots */}
-              <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2" style={{ zIndex: 20 }}>
-                {heroSlides.map((_, i) => (
-                  <button key={i} onClick={() => goToHero(i)}
-                    className="rounded-full transition-all duration-300"
-                    style={{
-                      width:      heroSlide === i ? '28px' : '8px',
-                      height:     '8px',
-                      background: heroSlide === i ? '#E8731A' : 'rgba(255,255,255,0.55)',
-                    }}/>
-                ))}
-              </div>
-
-
-
-              {/* Scroll indicator */}
-              
-
-
-            </>
-          )
-        })()}
-      </section>
-
-
-      
-
-      {/* ── WHERE TO? SEARCH SECTION ── */}
-      <section className="bg-white">
-        <div className="max-w-4xl mx-auto px-4 pt-8 sm:pt-10 pb-6 sm:pb-8 text-center">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-6 sm:mb-8 tracking-tight"
-            style={{ color: '#1a1a1a' }}>
-            Where to?
-          </h1>
-          <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200 overflow-x-auto">
-            {tabs.map(tab => (
-              <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0 ${
-                  activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
-                }`}>
-                <span className="inline-block rounded-full flex-shrink-0"
-                  style={{ width: '6px', height: '6px', background: '#E8731A' }} />
-                <span className="hidden sm:inline">{tab.label}</span>
-              </button>
-            ))}
-          </div>
-          <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
-            <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-full border border-gray-200 px-4 sm:px-5 py-2.5 sm:py-3"
-              style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              <input type="text" value={search} onChange={e => setSearch(e.target.value)}
-                placeholder="Places to go, things to do, hotels..."
-                className="flex-1 min-w-0 text-gray-700 text-xs sm:text-sm focus:outline-none bg-transparent placeholder-gray-400" />
-              <button type="submit"
-                className="font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full text-white hover:opacity-90 transition-opacity flex-shrink-0"
-                style={{ background: '#E8731A' }}>
-                Search
-              </button>
-            </div>
-          </form>
-        </div>
-
-        {/* ── ANIMATED SLIDESHOW CARD ── */}
-        <div className="max-w-6xl mx-auto px-4 pb-8 sm:pb-10">
-          <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col md:flex-row transition-colors duration-700"
-            style={{ background: s.bg, minHeight: '340px' }}>
-
-            {/* Left image */}
-            <div className="relative md:w-[55%] h-52 sm:h-64 md:h-auto overflow-hidden">
-              {cardSlides.map((slide, i) => (
-                <div key={i} className="absolute inset-0 transition-opacity duration-700"
-                  style={{ opacity: cardSlide === i ? 1 : 0 }}>
-                  <img src={slide.image} alt={slide.credit} className="w-full h-full object-cover" />
-                  <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
-                    <span className="text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full"
-                      style={{ background: 'rgba(0,0,0,0.45)' }}>
-                      📍 {slide.credit}
-                    </span>
-                  </div>
-                </div>
-              ))}
-              {/* Dots */}
-              <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 flex gap-1.5 z-10">
-                {cardSlides.map((_, i) => (
-                  <button key={i} onClick={() => goToCard(i)} className="rounded-full transition-all"
-                    style={{ width: cardSlide === i ? '20px' : '8px', height: '8px',
-                      background: cardSlide === i ? 'white' : 'rgba(255,255,255,0.5)' }} />
-                ))}
-              </div>
-            </div>
-
-            {/* Right text */}
-            <div className="md:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 md:p-12 text-center">
-              <div style={{
-                opacity:    cardTransing ? 0 : 1,
-                transform:  cardTransing ? 'translateY(12px)' : 'translateY(0)',
-                transition: 'opacity 0.4s ease, transform 0.4s ease',
-              }}>
-                <h2 className="font-black leading-tight mb-3 sm:mb-4 text-white"
-                  style={{ fontSize: 'clamp(1.35rem, 4.5vw, 2.6rem)' }}>
-                  {s.heading}
-                </h2>
-                <p className="text-white/80 text-sm md:text-base mb-6 sm:mb-8">{s.sub}</p>
-                <Link to={s.to}
-                  className="font-black text-white text-sm px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
-                  style={{ background: s.btnBg }}>
-                  {s.btnLabel}
+                <Link
+                  to={hs.to}
+                  className="font-bold text-white px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
+                  style={{ background: '#E8731A', fontSize: '0.9rem' }}
+                >
+                  {hs.cta}
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-    </>
+
+            {/* Arrows */}
+            <button onClick={goPrevHero}
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+              style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            <button onClick={goNextHero}
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+              style={{ zIndex: 20, background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)' }}>
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+
+            {/* Dots */}
+            <div className="absolute bottom-14 sm:bottom-16 left-1/2 -translate-x-1/2 flex items-center gap-2" style={{ zIndex: 20 }}>
+              {heroSlides.map((_, i) => (
+                <button key={i} onClick={() => goToHero(i)}
+                  className="rounded-full transition-all duration-300"
+                  style={{
+                    width: heroSlide === i ? '28px' : '8px',
+                    height: '8px',
+                    background: heroSlide === i ? '#E8731A' : 'rgba(255,255,255,0.55)',
+                  }}/>
+              ))}
+            </div>
+          </>
+        )
+      })()}
+    </section>
   )
 }
 
+
+
+
+
+//where to deep
+    // ─── Where To? (Search & Card Slideshow) ─────────────────────────────────────
+function WhereTo() {
+  const [activeTab, setActiveTab] = useState('all')
+  const [search, setSearch] = useState('')
+
+  const tabs = [
+    { key: 'all', label: 'Search All', icon: '🏠' },
+    { key: 'tours', label: 'Things to Do', icon: '🦍' },
+    { key: 'hotel', label: 'Hotels', icon: '🏨' },
+    { key: 'events', label: 'Events', icon: '🎉' },
+    { key: 'news', label: 'News', icon: '📰' },
+  ]
+
+  const tabRoutes = { all: '/tours', tours: '/tours', hotel: '/directory', events: '/events', news: '/news' }
+
+  // ── Card slideshow ──
+  const cardSlides = [
+    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=900&q=80', credit: 'Bwindi Forest', bg: '#E8731A', heading: 'Find interesting things to do', sub: 'Browse thousands of experiences across Uganda.', btnLabel: 'Explore now', btnBg: '#2A6B7C', to: '/tours' },
+    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=900&q=80', credit: 'Queen Elizabeth', bg: '#2A6B7C', heading: 'Find safari tour packages', sub: "Curated safari experiences across Uganda's finest parks.", btnLabel: 'Explore now', btnBg: '#E8731A', to: '/tours' },
+    { image: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=900&q=80', credit: 'Luxury Lodges', bg: '#E8731A', heading: 'Find luxury destinations', sub: "World-class lodges in the heart of Uganda's wild beauty.", btnLabel: 'Explore now', btnBg: '#2A6B7C', to: '/directory' },
+    { image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?w=900&q=80', credit: 'Tourism Facilities', bg: '#2A6B7C', heading: 'List your tourism facilities', sub: 'Reach thousands of travelers. Add your business today.', btnLabel: 'List your business', btnBg: '#E8731A', to: '/contact' },
+  ]
+
+  const [cardSlide, setCardSlide] = useState(0)
+  const [cardTransing, setCardTransing] = useState(false)
+
+  // Card slideshow auto-advance
+  useEffect(() => {
+    const t = setInterval(() => {
+      setCardTransing(true)
+      setTimeout(() => { setCardSlide(prev => (prev + 1) % cardSlides.length); setCardTransing(false) }, 400)
+    }, 4500)
+    return () => clearInterval(t)
+  }, [])
+
+  function goToCard(i) {
+    if (i === cardSlide) return
+    setCardTransing(true)
+    setTimeout(() => { setCardSlide(i); setCardTransing(false) }, 400)
+  }
+
+  function handleSearch(e) {
+    e.preventDefault()
+    window.location.href = tabRoutes[activeTab] + (search ? `?search=${search}` : '')
+  }
+
+  const s = cardSlides[cardSlide]
+
+  return (
+    <section className="bg-white">
+      <div className="max-w-4xl mx-auto px-4 pt-8 sm:pt-10 pb-6 sm:pb-8 text-center">
+        <h1 className="text-3xl sm:text-5xl md:text-6xl font-black mb-6 sm:mb-8 tracking-tight"
+          style={{ color: '#1a1a1a' }}>
+          Where to?
+        </h1>
+        <div className="flex items-center justify-center gap-0 mb-6 border-b border-gray-200 overflow-x-auto">
+          {tabs.map(tab => (
+            <button key={tab.key} onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold transition-all border-b-2 -mb-px whitespace-nowrap flex-shrink-0 ${
+                activeTab === tab.key ? 'border-black text-black' : 'border-transparent text-gray-500 hover:text-gray-800'
+              }`}>
+              <span className="inline-block rounded-full flex-shrink-0"
+                style={{ width: '6px', height: '6px', background: '#E8731A' }} />
+              <span className="hidden sm:inline">{tab.label}</span>
+            </button>
+          ))}
+        </div>
+        <form onSubmit={handleSearch} className="relative max-w-2xl mx-auto">
+          <div className="flex items-center gap-2 sm:gap-3 bg-white rounded-full border border-gray-200 px-4 sm:px-5 py-2.5 sm:py-3"
+            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.12)' }}>
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" value={search} onChange={e => setSearch(e.target.value)}
+              placeholder="Places to go, things to do, hotels..."
+              className="flex-1 min-w-0 text-gray-700 text-xs sm:text-sm focus:outline-none bg-transparent placeholder-gray-400" />
+            <button type="submit"
+              className="font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 rounded-full text-white hover:opacity-90 transition-opacity flex-shrink-0"
+              style={{ background: '#E8731A' }}>
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {/* ── ANIMATED SLIDESHOW CARD ── */}
+      <div className="max-w-6xl mx-auto px-4 pb-8 sm:pb-10">
+        <div className="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col md:flex-row transition-colors duration-700"
+          style={{ background: s.bg, minHeight: '340px' }}>
+
+          {/* Left image */}
+          <div className="relative md:w-[55%] h-52 sm:h-64 md:h-auto overflow-hidden">
+            {cardSlides.map((slide, i) => (
+              <div key={i} className="absolute inset-0 transition-opacity duration-700"
+                style={{ opacity: cardSlide === i ? 1 : 0 }}>
+                <img src={slide.image} alt={slide.credit} className="w-full h-full object-cover" />
+                <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4">
+                  <span className="text-white text-[11px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full"
+                    style={{ background: 'rgba(0,0,0,0.45)' }}>
+                    📍 {slide.credit}
+                  </span>
+                </div>
+              </div>
+            ))}
+            {/* Dots */}
+            <div className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 flex gap-1.5 z-10">
+              {cardSlides.map((_, i) => (
+                <button key={i} onClick={() => goToCard(i)} className="rounded-full transition-all"
+                  style={{ width: cardSlide === i ? '20px' : '8px', height: '8px',
+                    background: cardSlide === i ? 'white' : 'rgba(255,255,255,0.5)' }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Right text */}
+          <div className="md:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 md:p-12 text-center">
+            <div style={{
+              opacity: cardTransing ? 0 : 1,
+              transform: cardTransing ? 'translateY(12px)' : 'translateY(0)',
+              transition: 'opacity 0.4s ease, transform 0.4s ease',
+            }}>
+              <h2 className="font-black leading-tight mb-3 sm:mb-4 text-white"
+                style={{ fontSize: 'clamp(1.35rem, 4.5vw, 2.6rem)' }}>
+                {s.heading}
+              </h2>
+              <p className="text-white/80 text-sm md:text-base mb-6 sm:mb-8">{s.sub}</p>
+              <Link to={s.to}
+                className="font-black text-white text-sm px-7 sm:px-8 py-3 sm:py-3.5 rounded-full hover:opacity-90 transition-opacity inline-block"
+                style={{ background: s.btnBg }}>
+                {s.btnLabel}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 
 
@@ -1197,31 +1194,29 @@ export default function Home() {
         news={merge(liveNews, PLACEHOLDER_NEWS, 3)}
         events={merge(liveEvents, PLACEHOLDER_EVENTS, 3)}
       />
+      <WhereTo />
+      
       <CategoryImageGrid />
 
         <div className="max-w-7xl mx-auto px-4 py-4">
           <AdSlot size="leaderboard" />
         </div>
 
-
-      <ToursSection     posts={merge(liveTours,  PLACEHOLDER_TOURS)}    />
+      <ToursSection posts={merge(liveTours, PLACEHOLDER_TOURS)} />
       <PromoBanner />
 
         <div className="max-w-7xl mx-auto px-4 py-4">
           <AdSlot size="billboard" />
         </div>
 
-
-      <InspirationSection posts={merge(liveNews, PLACEHOLDER_NEWS, 3)}  />
-      <HotelsSection    posts={merge(liveHotels, PLACEHOLDER_HOTELS, 4)} />
+      <InspirationSection posts={merge(liveNews, PLACEHOLDER_NEWS, 3)} />
+      <HotelsSection posts={merge(liveHotels, PLACEHOLDER_HOTELS, 4)} />
 
         <div className="max-w-7xl mx-auto px-4 py-4">
           <AdSlot size="leaderboard" />
         </div>
 
-
       <DestinationsSection />
-      
       <CommunityBanner />
 
         <div className="sm:hidden px-4 py-3">
@@ -1229,7 +1224,6 @@ export default function Home() {
         </div>
 
       <PartnersMarquee />
-
       <JoinBanner />
     </div>
   )

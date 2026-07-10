@@ -46,16 +46,24 @@ export default function AdminLogin() {
 
       <div className="w-full max-w-md relative z-10">
 
-        {/* ── Logo block ── */}
+
+
+
+
+
+
+                {/* ── Logo block ── */}
         <div className="text-center mb-8">
           {/* Icon mark */}
           <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg"
+            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg overflow-hidden"
             style={{ background: 'linear-gradient(135deg, #E8731A, #f59e0b)' }}
           >
-            <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
+            <img 
+              src="/walogo.png" 
+              alt="ShowMeUganda Logo" 
+              className="w-10 h-10 object-contain"
+            />
           </div>
 
           {/* Wordmark */}
@@ -74,6 +82,11 @@ export default function AdminLogin() {
             Content Management System
           </p>
         </div>
+
+
+
+
+
 
         {/* ── Glass card ── */}
         <div

@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const WHATSAPP_NUMBER = '256758770888'
-const WHATSAPP_DEFAULT_MESSAGE = 'Hello! I found you on ShowMeUganda.com and I would like to enquire about your tours and services.'
+const WHATSAPP_DEFAULT_MESSAGE = 'Hello! I found you on ShowMeUganda.org and I would like to enquire about your tours and services.'
 
 // ─── Quick reply options ──────────────────────────────────────────────────────
 const QUICK_REPLIES = [
@@ -11,7 +11,7 @@ const QUICK_REPLIES = [
   { label: '🚐 Plan a Safari',          message: 'Hi! I want to plan a safari in Uganda. What packages do you offer?'        },
   { label: '📅 Check Availability',     message: 'Hi! I\'d like to check availability for a tour. Can you help me?'          },
   { label: '💰 Get a Price Quote',      message: 'Hi! Can I get a price quote for a Uganda tour package?'                    },
-  { label: '🎉 Enquire About an Event', message: 'Hi! I saw an event on ShowMeUganda.com and I\'d like more information.'    },
+  { label: '🎉 Enquire About an Event', message: 'Hi! I saw an event on ShowMeUganda.org and I\'d like more information.'    },
   { label: '📍 List My Business',       message: 'Hi! I\'d like to list my tourism business on ShowMeUganda. How do I start?'},
   { label: '✈️ Custom Itinerary',       message: 'Hi! I\'d like a custom Uganda travel itinerary built for me.'              },
 ]
@@ -340,7 +340,7 @@ export default function WhatsApp() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { icon: '📞', label: 'Call us',   value: '+256 758 770 888',       href: 'tel:+256758770888'                        },
-              { icon: '📧', label: 'Email us',  value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.org'             },
+              { icon: '📧', label: 'Email us',  value: 'info@showmeuganda.org',  href: 'mailto:info@showmeuganda.org'             },
               { icon: '📍', label: 'Visit us',  value: 'Kampala, Uganda',        href: 'https://maps.google.com/?q=Kampala,Uganda'},
             ].map((item) => (
               <a

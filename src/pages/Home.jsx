@@ -784,7 +784,7 @@ function Hero() {
     {
       src: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',
       alt: 'Gorilla Trekking Bwindi',
-      heading: 'Walk With the Giants',
+      heading: 'Uganda, Nature\'s Greatest Masterpiece',
       sub: 'Come face to face with mountain gorillas in the heart of Bwindi Impenetrable Forest.',
       cta: 'Book a Trek',
       to: '/tours',

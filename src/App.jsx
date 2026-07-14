@@ -11,6 +11,7 @@ import Contact         from './pages/Contact'
 import SinglePost      from './pages/SinglePost'
 import About           from './pages/About'
 import Gallery         from './pages/Gallery'
+import Privacy        from './pages/Privacy'
 import WhatsApp, { WhatsAppFloat } from './pages/WhatsApp'
 
 // Admin Pages
@@ -61,9 +62,8 @@ export default function App() {
                 <Route path="/about"        element={<About />}        />
                 <Route path="/gallery"      element={<Gallery />}      />
                 <Route path="/whatsapp"     element={<WhatsApp />}     />
-
-                <Route path="/post/:slug" element={<SinglePost />} />
-
+                <Route path="/post/:slug"   element={<SinglePost />}   />
+                <Route path="/privacy"     element={<Privacy />}     />
               </Routes>
             </main>
             <Footer />

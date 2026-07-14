@@ -199,24 +199,34 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div
-          className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
-          style={{ borderColor: 'rgba(255,255,255,0.15)' }}
-        >
-          <div className="text-white/40 text-xs">
-            © {new Date().getFullYear()} ShowMeUganda.com — All rights reserved.
+          <div
+            className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+            style={{ borderColor: 'rgba(255,255,255,0.15)' }}
+          >
+            <div className="text-white/40 text-xs">
+              © {new Date().getFullYear()} ShowMeUganda.com — All rights reserved.
+            </div>
+
+
+
+            {/* REPLACEMENT CODE - COPY THIS */}
+              <div className="flex space-x-6">
+                <Link to="/privacy" className="text-white/40 text-xs hover:text-[#E8731A] transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link to="/terms" className="text-white/40 text-xs hover:text-[#E8731A] transition-colors">
+                  Terms of Service
+                </Link>
+                <Link to="/cookies" className="text-white/40 text-xs hover:text-[#E8731A] transition-colors">
+                  Cookie Policy
+                </Link>
+              </div>
+
+
+
           </div>
-          <div className="flex space-x-6">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
-              <span
-                key={item}
-                className="text-white/40 text-xs hover:text-[#E8731A] transition-colors cursor-pointer"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </div>
+
+
       </div>
     </footer>
   );

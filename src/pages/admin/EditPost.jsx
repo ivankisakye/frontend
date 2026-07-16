@@ -1,6 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams, Link as RouterLink } from 'react-router-dom'
 import apiClient from '../../services/apiClient'
+// ── NEW: TipTap imports ──────────────────────────────────────────────────────
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Link from '@tiptap/extension-link'
+import Underline from '@tiptap/extension-underline'
+import TextAlign from '@tiptap/extension-text-align'
+import Placeholder from '@tiptap/extension-placeholder'
 
 const TEAL   = '#2A6B7C'
 const ORANGE = '#E8731A'
@@ -48,6 +55,172 @@ function IcPlus()   { return <svg className="w-4 h-4" fill="none" stroke="curren
 function IcTrash()  { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg> }
 function IcUpload() { return <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg> }
 function IcClose()  { return <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12"/></svg> }
+
+// ── NEW: Toolbar Icons ──────────────────────────────────────────────────────
+function IcBold() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"/></svg> }
+function IcItalic() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 4h8M14 4l-4 16M6 20h8"/></svg> }
+function IcUnderline() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 4v6a6 6 0 0012 0V4"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 20h12"/></svg> }
+function IcStrike() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12h10M12 12v6M12 12V6"/></svg> }
+function IcAlignLeft() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h10M4 14h16M4 18h10"/></svg> }
+function IcAlignCenter() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M8 10h8M4 14h16M8 18h8"/></svg> }
+function IcAlignRight() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M14 10h6M4 14h16M14 18h6"/></svg> }
+function IcLink2() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"/></svg> }
+
+// ── NEW: Rich Text Editor Component ──────────────────────────────────────────
+function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Underline,
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-blue-600 underline',
+        },
+      }),
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Placeholder.configure({
+        placeholder: placeholder || 'Write your content here…',
+      }),
+    ],
+    content: value,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML())
+    },
+  })
+
+  if (!editor) return null
+
+  const toggleLink = () => {
+    const previousUrl = editor.getAttributes('link').href
+    const url = window.prompt('Enter URL:', previousUrl)
+    if (url === null) return
+    if (url === '') {
+      editor.chain().focus().unsetLink().run()
+      return
+    }
+    editor.chain().focus().setLink({ href: url }).run()
+  }
+
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden bg-white focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-50 transition-all">
+      {/* Toolbar */}
+      <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-gray-100 bg-gray-50/50">
+        <button
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bold') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Bold"
+        >
+          <IcBold />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('italic') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Italic"
+        >
+          <IcItalic />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('underline') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Underline"
+        >
+          <IcUnderline />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleStrike().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('strike') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Strikethrough"
+        >
+          <IcStrike />
+        </button>
+        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <button
+          onClick={toggleLink}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('link') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Insert Link"
+        >
+          <IcLink2 />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().unsetLink().run()}
+          className="p-1.5 rounded hover:bg-gray-200 transition-colors text-gray-400 text-xs font-bold"
+          title="Remove Link"
+        >
+          🔗✕
+        </button>
+        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('left').run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'left' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Align Left"
+        >
+          <IcAlignLeft />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('center').run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'center' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Align Center"
+        >
+          <IcAlignCenter />
+        </button>
+        <button
+          onClick={() => editor.chain().focus().setTextAlign('right').run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'right' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Align Right"
+        >
+          <IcAlignRight />
+        </button>
+        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <button
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bulletList') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Bullet List"
+        >
+          • List
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('orderedList') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Numbered List"
+        >
+          1. List
+        </button>
+        <div className="w-px h-5 bg-gray-200 mx-1" />
+        <button
+          onClick={() => editor.chain().focus().setParagraph().run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-semibold ${editor.isActive('paragraph') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Paragraph"
+        >
+          ¶
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-bold ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Heading 2"
+        >
+          H2
+        </button>
+        <button
+          onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-bold ${editor.isActive('heading', { level: 3 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
+          title="Heading 3"
+        >
+          H3
+        </button>
+      </div>
+
+      {/* Editor content */}
+      <EditorContent
+        editor={editor}
+        className="prose prose-sm max-w-none p-4 focus:outline-none"
+        style={{ minHeight }}
+      />
+    </div>
+  )
+}
 
 // ── Photo Upload Box ──────────────────────────────────────────────────────────
 function PhotoUploadBox({ label, hint, preview, uploading, onSelect, onRemove, multiple = false }) {
@@ -311,12 +484,12 @@ export default function EditPost() {
           ShowMe<span className="text-white">Uganda</span>
           <span className="text-gray-400 font-normal text-sm ml-2">Edit Post</span>
         </h1>
-        <Link
+        <RouterLink
           to="/admin/dashboard"
           className="text-xs bg-gray-800 hover:bg-gray-700 text-white px-3 py-1.5 rounded-lg transition-colors"
         >
           ← Back
-        </Link>
+        </RouterLink>
       </header>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -351,22 +524,28 @@ export default function EditPost() {
                 </Field>
 
                 <Field label="Excerpt" hint="short summary">
-                  <textarea
-                    name="excerpt"
+                  {/* ── REPLACED textarea with RichTextEditor ── */}
+                  <RichTextEditor
                     value={form.excerpt}
-                    onChange={handleChange}
-                    className={inputClass}
-                    rows={3}
+                    onChange={(html) => setForm(prev => ({ ...prev, excerpt: html }))}
+                    placeholder="Brief 1–2 sentence summary…"
+                    minHeight="100px"
                   />
+                  <div className="flex justify-between mt-1">
+                    <p className="text-[11px] text-gray-400">
+                      {form.excerpt.replace(/<[^>]*>/g, '').length} characters
+                    </p>
+                    <p className="text-[11px] text-gray-400">Supports bold, italic, links</p>
+                  </div>
                 </Field>
 
                 <Field label="Content" hint="full article body">
-                  <textarea
-                    name="content"
+                  {/* ── REPLACED textarea with RichTextEditor ── */}
+                  <RichTextEditor
                     value={form.content}
-                    onChange={handleChange}
-                    className={inputClass}
-                    rows={12}
+                    onChange={(html) => setForm(prev => ({ ...prev, content: html }))}
+                    placeholder="Write your full content here…"
+                    minHeight="300px"
                   />
                 </Field>
               </div>

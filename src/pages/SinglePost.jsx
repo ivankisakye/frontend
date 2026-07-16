@@ -46,7 +46,7 @@ function CategoryBadge({ category }) {
 // ─── Related Post Card ────────────────────────────────────────────────────────
 function RelatedCard({ post }) {
   return (
-    <Link to={`/post/${post.id}`} className="group block">
+    <Link to={`/post/${post.slug}`} className="group block">
       <div className="bg-white rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300">
         <div className="relative h-44 overflow-hidden">
           {post.image_url ? (

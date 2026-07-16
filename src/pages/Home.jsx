@@ -669,34 +669,246 @@ function DestinationsSection() {
 // ─── where >>>>News + Events>>>>>was ────────────────────────────────────────────────────────────
 // ─── News + Events ────────────────────────────────────────────────────────────
 
-function NewsAndEvents({ news, events }) {
+// ─── News & Stories ───────────────────────────────────────────────────────────
+function NewsAndStories({ news }) {
+  if (!news.length) return null
+
+  const featured = news[0]
+  const secondary = news.slice(1, 3)
+  const sidebar = news.slice(3, 7)
+
   return (
-    <section className="py-8 sm:py-10" style={{ background: '#f8f8f8' }}>
+    <section className="py-10 sm:py-14" style={{ background: '#f8f8f8' }}>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-          <Reveal direction="right">
-            <div className="flex items-end justify-between mb-4 sm:mb-5">
-              <h2 className="text-lg sm:text-xl font-black text-gray-900">Latest news</h2>
-              <Link to="/news" className="text-xs sm:text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>See all →</Link>
+
+        {/* Section header */}
+        <div className="flex items-end justify-between mb-6 sm:mb-8">
+          <div>
+            <span className="text-[11px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-2 inline-block"
+              style={{ background: 'rgba(232,115,26,0.12)', color: '#E8731A' }}>
+              Latest
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900">News &amp; Stories</h2>
+          </div>
+          <Link to="/news" className="text-sm font-bold hover:underline flex items-center gap-1" style={{ color: '#2A6B7C' }}>
+            View all <span>→</span>
+          </Link>
+        </div>
+
+        {/* ── 3-column newspaper layout ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+
+          {/* LEFT col — secondary stories */}
+          <div className="lg:col-span-3 flex flex-col gap-4">
+            {secondary.map((post, i) => (
+              <Link key={post.id || i} to={`/post/${post.slug}`}
+                className="group flex flex-col gap-2 bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-md transition-all duration-300">
+                {post.image_url && (
+                  <div className="overflow-hidden h-36">
+                    <img src={post.image_url} alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                  </div>
+                )}
+                <div className="p-3">
+                  <p className="text-[10px] font-bold uppercase tracking-wider mb-1" style={{ color: '#E8731A' }}>
+                    {post.category || 'News'}
+                  </p>
+                  <h4 className="font-black text-gray-900 text-sm leading-snug line-clamp-3 group-hover:text-orange-600 transition-colors">
+                    {post.title}
+                  </h4>
+                  <p className="text-[11px] text-gray-400 mt-2">
+                    {new Date(post.created_at).toLocaleDateString('en-UG', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* CENTER col — featured story */}
+          {featured && (
+            <div className="lg:col-span-6">
+              <Link to={`/post/${featured.slug}`}
+                className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300 h-full">
+                {featured.image_url && (
+                  <div className="overflow-hidden" style={{ height: '280px' }}>
+                    <img src={featured.image_url} alt={featured.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                  </div>
+                )}
+                <div className="p-5 flex flex-col flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full text-white"
+                      style={{ background: '#E8731A' }}>
+                      Featured
+                    </span>
+                    <span className="text-[11px] text-gray-400">
+                      {new Date(featured.created_at).toLocaleDateString('en-UG', { day: 'numeric', month: 'short', year: 'numeric' })}
+                    </span>
+                  </div>
+                  <h3 className="font-black text-gray-900 text-xl sm:text-2xl leading-tight mb-3 group-hover:text-orange-600 transition-colors">
+                    {featured.title}
+                  </h3>
+                  {featured.excerpt && (
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-3 flex-1">
+                      {featured.excerpt}
+                    </p>
+                  )}
+                  <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-xs font-bold capitalize px-2.5 py-1 rounded-full"
+                      style={{ background: 'rgba(42,107,124,0.1)', color: '#2A6B7C' }}>
+                      {featured.category || 'News'}
+                    </span>
+                    <span className="text-xs font-bold group-hover:gap-2 flex items-center gap-1 transition-all" style={{ color: '#E8731A' }}>
+                      Read more →
+                    </span>
+                  </div>
+                </div>
+              </Link>
             </div>
-            <div className="flex flex-col gap-2">
-              {news.slice(0, 3).map((post, i) => <NewsCard key={post.id || i} post={post} />)}
+          )}
+
+          {/* RIGHT col — sidebar list */}
+          <div className="lg:col-span-3 flex flex-col gap-0 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+            <div className="px-4 py-3 border-b border-gray-100">
+              <p className="text-xs font-black uppercase tracking-widest text-gray-400">More Stories</p>
             </div>
-          </Reveal>
-          <Reveal direction="left" delay={150}>
-            <div className="flex items-end justify-between mb-4 sm:mb-5">
-              <h2 className="text-lg sm:text-xl font-black text-gray-900">Upcoming events</h2>
-              <Link to="/events" className="text-xs sm:text-sm font-semibold hover:underline" style={{ color: '#2A6B7C' }}>See all →</Link>
+            {sidebar.length === 0 ? (
+              <div className="flex-1 flex items-center justify-center p-6">
+                <p className="text-xs text-gray-400 text-center">More stories coming soon</p>
+              </div>
+            ) : (
+              sidebar.map((post, i) => (
+                <Link key={post.id || i} to={`/post/${post.slug}`}
+                  className="group flex items-start gap-3 px-4 py-3.5 border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
+                  {post.image_url && (
+                    <div className="w-14 h-14 rounded-xl overflow-hidden flex-shrink-0">
+                      <img src={post.image_url} alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h5 className="font-bold text-gray-800 text-xs leading-snug line-clamp-3 group-hover:text-orange-600 transition-colors">
+                      {post.title}
+                    </h5>
+                    <p className="text-[10px] text-gray-400 mt-1">
+                      {new Date(post.created_at).toLocaleDateString('en-UG', { day: 'numeric', month: 'short' })}
+                    </p>
+                  </div>
+                </Link>
+              ))
+            )}
+            <div className="p-4 border-t border-gray-100">
+              <Link to="/news"
+                className="w-full block text-center text-xs font-bold py-2.5 rounded-xl transition-colors hover:text-white"
+                style={{ border: `1.5px solid #2A6B7C`, color: '#2A6B7C' }}
+                onMouseEnter={e => { e.currentTarget.style.background='#2A6B7C'; e.currentTarget.style.color='white' }}
+                onMouseLeave={e => { e.currentTarget.style.background='transparent'; e.currentTarget.style.color='#2A6B7C' }}>
+                All News →
+              </Link>
             </div>
-            <div className="flex flex-col gap-4">
-              {events.slice(0, 2).map((post, i) => <EventCard key={post.id || i} post={post} />)}
-            </div>
-          </Reveal>
+          </div>
+
         </div>
       </div>
     </section>
   )
 }
+
+
+
+
+
+
+//------------------------events-----------------------
+// ─── Upcoming Events ──────────────────────────────────────────────────────────
+function UpcomingEvents({ events }) {
+  if (!events.length) return null
+
+  return (
+    <section className="py-10 sm:py-14 bg-white">
+      <div className="max-w-7xl mx-auto px-4">
+
+        {/* Header */}
+        <div className="flex items-end justify-between mb-6 sm:mb-8">
+          <div>
+            <span className="text-[11px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full mb-2 inline-block"
+              style={{ background: 'rgba(42,107,124,0.1)', color: '#2A6B7C' }}>
+              Upcoming
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-gray-900">Events in Uganda</h2>
+          </div>
+          <Link to="/events" className="text-sm font-bold hover:underline flex items-center gap-1"
+            style={{ color: '#2A6B7C' }}>
+            View all <span>→</span>
+          </Link>
+        </div>
+
+        {/* Events grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {events.slice(0, 3).map((post, i) => (
+            <Link key={post.id || i} to={`/post/${post.slug}`}
+              className="group bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 flex flex-col">
+
+              {/* Image */}
+              <div className="relative overflow-hidden h-48">
+                {post.image_url ? (
+                  <img src={post.image_url} alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-4xl"
+                    style={{ background: 'linear-gradient(135deg, #2A6B7C22, #E8731A22)' }}>
+                    🎉
+                  </div>
+                )}
+                {/* Date badge */}
+                <div className="absolute top-3 left-3">
+                  <div className="flex flex-col items-center bg-white rounded-xl px-2.5 py-1.5 shadow-sm min-w-[44px]">
+                    <span className="text-[10px] font-black uppercase tracking-wider" style={{ color: '#E8731A' }}>
+                      {new Date(post.created_at).toLocaleDateString('en-UG', { month: 'short' })}
+                    </span>
+                    <span className="text-lg font-black text-gray-900 leading-none">
+                      {new Date(post.created_at).getDate()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-4 flex flex-col flex-1">
+                <span className="text-[10px] font-black uppercase tracking-wider mb-2"
+                  style={{ color: '#2A6B7C' }}>
+                  Event
+                </span>
+                <h3 className="font-black text-gray-900 text-sm leading-snug line-clamp-2 mb-2 group-hover:text-orange-600 transition-colors flex-1">
+                  {post.title}
+                </h3>
+                {post.excerpt && (
+                  <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-3">
+                    {post.excerpt}
+                  </p>
+                )}
+                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <span className="text-[11px] text-gray-400">
+                    {new Date(post.created_at).toLocaleDateString('en-UG', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </span>
+                  <span className="text-[11px] font-bold" style={{ color: '#E8731A' }}>
+                    View →
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
+
+
+
+
 
 
 
@@ -1190,10 +1402,11 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
       <Hero />
-      <NewsAndEvents
-        news={merge(liveNews, PLACEHOLDER_NEWS, 3)}
-        events={merge(liveEvents, PLACEHOLDER_EVENTS, 3)}
-      />
+
+      <NewsAndStories news={merge(liveNews, PLACEHOLDER_NEWS, 7)} />
+
+      <UpcomingEvents events={merge(liveEvents, PLACEHOLDER_EVENTS, 3)} />
+
       <WhereTo />
       
       <CategoryImageGrid />

@@ -174,9 +174,9 @@ export default function Contact() {
               <div className="w-8 h-0.5 mb-5" style={{ background: '#E8731A' }} />
               <div className="space-y-5">
                 {[
-                  { icon: '📍', label: 'Location', value: 'Kampala, Uganda — CBD' },
-                  { icon: '📧', label: 'Email',    value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.com' },
-                  { icon: '📞', label: 'Phone',    value: '+256 700 000 000',       href: 'tel:+256700000000' },
+                  { icon: '📍', label: 'Location', value: ' Workers House Level 9 | South Wing' },
+                  { icon: '📧', label: 'Email',    value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.org' },
+                  { icon: '📞', label: 'Phone',    value: '+256 758 770 888',       href: 'tel:+256758770888' },
                   { icon: '🕒', label: 'Hours',    value: 'Mon – Fri, 8am – 6pm EAT' },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-4 group">
@@ -251,7 +251,7 @@ export default function Contact() {
                 className="text-xs font-bold"
                 style={{ color: '#2A6B7C' }}
               >
-                press@showmeuganda.com →
+                press@showmeuganda.org →
               </a>
             </div>
 
@@ -455,10 +455,10 @@ export default function Contact() {
           <div className="mb-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>
               <h3 className="text-xl font-black text-gray-900">Find us in Kampala</h3>
-              <p className="text-gray-500 text-sm mt-1">Central Business District, Uganda</p>
+              <p className="text-gray-500 text-sm mt-1">Workers House Level 9 | South Wing | Kampala </p>
             </div>
             <a
-              href="https://maps.google.com/?q=Kampala+CBD+Uganda"
+              href="https://maps.app.goo.gl/Ee1FVssDBS4dnZZi8"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-sm font-bold group self-start sm:self-auto"
@@ -475,7 +475,7 @@ export default function Contact() {
           <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm" style={{ height: '360px' }}>
             <iframe
               title="ShowMeUganda — Kampala Office"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63710.99797984489!2d32.54832007910156!3d0.31477699999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbc0f9d74b39b%3A0x4f1bd93d0f947cf2!2sKampala%2C%20Uganda!5e0!3m2!1sen!2sus!4v1700000000000"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.758481879105!2d32.58008087496458!3d0.3137991996831212!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbdcdff9015f5%3A0x4c5db19ba710cac5!2sWorkers%20house!5e0!3m2!1sen!2sug!4v1784187756630!5m2!1sen!2sug" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"          
               width="100%"
               height="100%"
               style={{ border: 0 }}

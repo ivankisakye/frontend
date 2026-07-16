@@ -311,6 +311,62 @@ function TourDetail({ post }) {
   )
 }
 
+// ─── Gallery Section ──────────────────────────────────────────────────────────
+function GallerySection({ images }) {
+  const [selected, setSelected] = useState(0)
+
+  if (!images || images.length === 0) return null
+
+  return (
+    <div className="mb-10">
+      <h2 className="font-black text-gray-900 text-xl mb-4">Gallery</h2>
+      
+      {/* Main selected image */}
+      <div className="relative rounded-2xl overflow-hidden bg-gray-100 mb-4" style={{ aspectRatio: '16/9' }}>
+        <img 
+          src={images[selected]} 
+          alt={`Gallery ${selected + 1}`}
+          className="w-full h-full object-cover"
+        />
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setSelected(i)}
+                className={`w-2.5 h-2.5 rounded-full transition-all ${
+                  i === selected ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/70'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Thumbnails */}
+      {images.length > 1 && (
+        <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-3">
+          {images.map((url, i) => (
+            <button
+              key={i}
+              onClick={() => setSelected(i)}
+              className={`relative rounded-xl overflow-hidden transition-all ${
+                i === selected ? 'ring-2 ring-offset-2' : 'opacity-60 hover:opacity-100'
+              }`}
+              style={{ 
+                aspectRatio: '16/9',
+                ringColor: i === selected ? '#2A6B7C' : 'transparent'
+              }}
+            >
+              <img src={url} alt={`Thumbnail ${i + 1}`} className="w-full h-full object-cover" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─── Skeleton Loader ──────────────────────────────────────────────────────────
 function Skeleton() {
   return (
@@ -464,6 +520,11 @@ export default function SinglePost() {
             {isHotel && <HotelDetail post={post} />}
             {isEvent && <EventDetail post={post} />}
             {isTour && <TourDetail post={post} />}
+
+            {/* ── GALLERY SECTION ── */}
+            {post.gallery && post.gallery.length > 0 && (
+              <GallerySection images={post.gallery} />
+            )}
 
             {/* Full content */}
             {post.content && (

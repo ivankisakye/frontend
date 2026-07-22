@@ -986,15 +986,15 @@ function Hero() {
   // ── Full-bleed hero slides ──
   const heroSlides = [
     {
-      src: '/images/cvr.jpg',
+      src: '/images/231fcbba-f28c-4ac6-8119-33a8d486ad3f.webp',
       alt: 'Uganda Safari',
-      heading: 'Unforgettable Adventures',
-      sub: "Discover curated tours and safari experiences across Uganda's most breathtaking destinations.",
+      heading: 'Explore the Stories Behind the Destinations',
+      sub: "Discover the latest news, inspiring travel stories and insights that showcase the best of Uganda",
       cta: 'Explore Now',
-      to: '/tours',
+      to: '/news',
     },
     {
-      src: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1600&q=85',
+      src: '/images/44175af6-a541-43db-80fa-b3d0d08c8077.webp',
       alt: 'Gorilla Trekking Bwindi',
       heading: 'Uganda, Nature\'s Greatest Masterpiece',
       sub: 'Come face to face with mountain gorillas in the heart of Bwindi Impenetrable Forest.',
@@ -1004,18 +1004,18 @@ function Hero() {
     {
       src: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1600&q=85',
       alt: 'Queen Elizabeth National Park',
-      heading: 'Wildlife Beyond Compare',
-      sub: "Explore Uganda's most diverse national park — home to lions, elephants, and 600 bird species.",
+      heading: 'Curating Immersive Journeys for the curious',
+      sub: "Explore destinations, discover experiences, and plan your next Ugandan adventure through Show Me Uganda.",
       cta: 'View Safaris',
       to: '/tours',
     },
     {
-      src: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=85',
+      src: '/images/hot1.webp',
       alt: 'Source of the Nile Jinja',
-      heading: 'Follow the Nile',
-      sub: "From white-water rafting to sunset cruises, Jinja offers adventure at the source of the world's longest river.",
-      cta: 'Discover Jinja',
-      to: '/tours',
+      heading: 'Uganda\'s Official Discovery Directory.',
+      sub: "Helping you discover trusted businesses across Uganda",
+      cta: 'Explore Now',
+      to: '/directory',
     },
   ]
 

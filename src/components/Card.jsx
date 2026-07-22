@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 
+import DOMPurify from 'dompurify'
+
 export default function Card({ post }) {
   const categoryColors = {
     news:         'bg-blue-100 text-blue-700',
@@ -39,11 +41,20 @@ export default function Card({ post }) {
           <h3 className="font-bold text-gray-900 text-base leading-snug mb-2 line-clamp-2 group-hover:text-uganda-red transition-colors">
             {post.title}
           </h3>
+
+
+
+
           {post.excerpt && (
-            <p className="text-gray-500 text-sm line-clamp-2 leading-relaxed">
-              {post.excerpt}
-            </p>
+            <div
+              className="text-gray-500 text-sm line-clamp-2 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.excerpt) }}
+            />
           )}
+
+
+
+
           <div className="mt-3 text-xs text-gray-400">
             {new Date(post.created_at).toLocaleDateString('en-UG', {
               day: 'numeric', month: 'short', year: 'numeric'

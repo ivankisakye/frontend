@@ -67,6 +67,11 @@ function IcAlignRight() { return <svg className="w-4 h-4" fill="none" stroke="cu
 function IcLink2() { return <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"/></svg> }
 
 // ── NEW: Rich Text Editor Component ──────────────────────────────────────────
+// NOTE: every toolbar <button> below has type="button" so clicking it never
+// submits the surrounding <form>. Without this, HTML defaults a <button>
+// inside a <form> to type="submit" — which was silently submitting the post
+// update and redirecting to the dashboard whenever the toolbar was clicked
+// mid-edit.
 function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
   const editor = useEditor({
     extensions: [
@@ -109,6 +114,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 p-1.5 border-b border-gray-100 bg-gray-50/50">
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bold') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Bold"
@@ -116,6 +122,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcBold />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('italic') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Italic"
@@ -123,6 +130,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcItalic />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('underline') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Underline"
@@ -130,6 +138,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcUnderline />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('strike') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Strikethrough"
@@ -138,6 +147,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
         </button>
         <div className="w-px h-5 bg-gray-200 mx-1" />
         <button
+          type="button"
           onClick={toggleLink}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('link') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Insert Link"
@@ -145,6 +155,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcLink2 />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().unsetLink().run()}
           className="p-1.5 rounded hover:bg-gray-200 transition-colors text-gray-400 text-xs font-bold"
           title="Remove Link"
@@ -153,6 +164,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
         </button>
         <div className="w-px h-5 bg-gray-200 mx-1" />
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign('left').run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'left' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Align Left"
@@ -160,6 +172,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcAlignLeft />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign('center').run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'center' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Align Center"
@@ -167,6 +180,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           <IcAlignCenter />
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().setTextAlign('right').run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive({ textAlign: 'right' }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Align Right"
@@ -175,6 +189,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
         </button>
         <div className="w-px h-5 bg-gray-200 mx-1" />
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bulletList') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Bullet List"
@@ -182,6 +197,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           • List
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('orderedList') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Numbered List"
@@ -190,6 +206,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
         </button>
         <div className="w-px h-5 bg-gray-200 mx-1" />
         <button
+          type="button"
           onClick={() => editor.chain().focus().setParagraph().run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-semibold ${editor.isActive('paragraph') ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Paragraph"
@@ -197,6 +214,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           ¶
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-bold ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Heading 2"
@@ -204,6 +222,7 @@ function RichTextEditor({ value, onChange, placeholder, minHeight = '200px' }) {
           H2
         </button>
         <button
+          type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
           className={`p-1.5 rounded hover:bg-gray-200 transition-colors text-xs font-bold ${editor.isActive('heading', { level: 3 }) ? 'bg-gray-200 text-gray-900' : 'text-gray-500'}`}
           title="Heading 3"

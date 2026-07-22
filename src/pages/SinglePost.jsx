@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import apiClient from '../services/apiClient'
 
+import DOMPurify from 'dompurify'
+
 // ─── Brand Colors ─────────────────────────────────────────────────────────────
 // Teal:   #2A6B7C
 // Orange: #E8731A
@@ -68,11 +70,21 @@ function RelatedCard({ post }) {
           <h4 className="font-bold text-gray-900 text-sm leading-snug line-clamp-2 group-hover:text-orange-600 transition-colors">
             {post.title}
           </h4>
+
+
+
+
           {post.excerpt && (
-            <p className="text-gray-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">
-              {post.excerpt}
-            </p>
-          )}
+              <div
+                className="text-gray-500 text-xs mt-1.5 line-clamp-2 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.excerpt) }}
+              />
+            )}
+
+
+
+
+
           {post.rating && (
             <div className="flex items-center gap-2 mt-2">
               <Stars rating={post.rating} />
@@ -493,11 +505,23 @@ export default function SinglePost() {
           >
             {post.title}
           </h1>
+
+
+
+
+
           {post.excerpt && (
-            <p className="text-white/80 mt-2 max-w-2xl text-sm md:text-base leading-relaxed">
-              {post.excerpt}
-            </p>
-          )}
+              <div
+                className="text-white/80 mt-2 max-w-2xl text-sm md:text-base leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.excerpt) }}
+              />
+            )}
+
+
+
+
+
+
           {/* Rating inline in hero for hotels/tours */}
           {post.rating && (isHotel || isTour) && (
             <div className="flex items-center gap-3 mt-3">
@@ -526,18 +550,28 @@ export default function SinglePost() {
               <GallerySection images={post.gallery} />
             )}
 
+
+
+
+
+
+
             {/* Full content */}
             {post.content && (
               <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 mb-8">
                 <h2 className="font-black text-gray-900 text-xl mb-4">About</h2>
                 <div
                   className="prose prose-sm max-w-none text-gray-600 leading-relaxed"
-                  style={{ whiteSpace: 'pre-wrap' }}
-                >
-                  {post.content}
-                </div>
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
+                />
               </div>
             )}
+
+
+
+
+
+
 
             {/* Published date */}
             <div className="text-xs text-gray-400 mb-8">

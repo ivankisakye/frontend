@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import apiClient from '../services/apiClient'
 
+import DOMPurify from 'dompurify'
+
 // ─── Placeholder Hotels ───────────────────────────────────────────────────────
 const PLACEHOLDER_HOTELS = [
   { id: 'h1', title: 'Bwindi Lodge — Forest Luxury', excerpt: 'Perched on the edge of Bwindi Forest, this lodge offers unrivalled views and world-class service amid the gorilla habitat.', image_url: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80', category: 'hotel', rating: 4.9, reviews: 541, price: '$450', location: 'Bwindi', tag: 'Lodge', amenities: ['🦍 Gorilla Trekking', '🍽️ Fine Dining', '♾️ Pool'] },
@@ -99,9 +101,18 @@ function FeaturedHotelCard({ post }) {
             <h3 className="font-black text-gray-900 text-xl leading-snug mb-2 group-hover:text-orange-600 transition-colors">
               {post.title}
             </h3>
-            <p className="text-gray-500 text-sm leading-relaxed mb-4">
-              {post.excerpt}
-            </p>
+
+
+
+
+
+            <div
+              className="text-gray-500 text-sm leading-relaxed mb-4"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.excerpt) }}
+            />
+
+
+
 
             {/* Stars + reviews */}
             {post.rating && (
@@ -203,9 +214,16 @@ function HotelCard({ post }) {
             </div>
           )}
 
-          <p className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3 flex-1">
-            {post.excerpt}
-          </p>
+
+
+
+          <div
+            className="text-gray-500 text-xs leading-relaxed line-clamp-2 mb-3 flex-1"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.excerpt) }}
+          />
+
+
+
 
           {/* Amenities */}
           {post.amenities && (

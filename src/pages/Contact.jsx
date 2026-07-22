@@ -175,7 +175,7 @@ export default function Contact() {
               <div className="space-y-5">
                 {[
                   { icon: '📍', label: 'Location', value: ' Workers House Level 9 | South Wing' },
-                  { icon: '📧', label: 'Email',    value: 'info@showmeuganda.com',  href: 'mailto:info@showmeuganda.org' },
+                  { icon: '📧', label: 'Email',    value: 'info@showmeuganda.org',  href: 'mailto:info@showmeuganda.org' },
                   { icon: '📞', label: 'Phone',    value: '+256 758 770 888',       href: 'tel:+256758770888' },
                   { icon: '🕒', label: 'Hours',    value: 'Mon – Fri, 8am – 6pm EAT' },
                 ].map(item => (

@@ -937,7 +937,7 @@ function CommunityBanner() {
               </Link>
             </div>
             <div className="md:w-[45%] h-48 sm:h-56 md:h-auto overflow-hidden">
-              <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=700&q=80"
+              <img src="/images/6dfb38de-2b79-4e5a-8241-114c24b3b3c0.webp"
                 alt="Uganda wildlife" className="w-full h-full object-cover opacity-70" />
             </div>
           </div>

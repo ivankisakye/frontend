@@ -438,7 +438,7 @@ function HotelsSection({ posts }) {
 
 
 
-// ─── Destinations Section:::::Gallery::::::: ─────────────────────────────────────────────────────
+// ─── Destinations Section:::::Galflery::::::: ─────────────────────────────────────────────────────
 // ─── Gallery Carousel Section ─────────────────────────────────────────────────
 function DestinationsSection() {
   const [current,      setCurrent]      = useState(0)
@@ -449,14 +449,14 @@ function DestinationsSection() {
   const timerRef = useRef(null)
 
   const SLIDES = [
-    { image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200&q=85', name: 'Bwindi Forest',      sub: 'Gorilla Trekking',    tag: 'Wildlife'    },
-    { image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&q=85',   name: 'Queen Elizabeth',    sub: 'National Park',       tag: 'Safari'      },
-    { image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=85',name: 'Source of the Nile', sub: 'Jinja, Uganda',       tag: 'Adventure'   },
-    { image: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=85',name: 'Murchison Falls',    sub: 'North-West Uganda',   tag: 'Landscapes'  },
-    { image: 'https://images.unsplash.com/photo-1526495124232-a04e1849168c?w=1200&q=85',name: 'Kampala City',       sub: 'Capital of Uganda',   tag: 'Culture'     },
-    { image: 'https://images.unsplash.com/photo-1564760055775-d63b17a55c44?w=1200&q=85',name: 'Kibale Forest',      sub: 'Chimpanzee Tracking', tag: 'Wildlife'    },
-    { image: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=1200&q=85',name: 'Lake Bunyonyi',      sub: 'South-Western Uganda',tag: 'Landscapes'  },
-    { image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=1200&q=85',name: 'Nyege Nyege',        sub: 'Jinja Festival',      tag: 'Culture'     },
+    { image: '/images/6dfb38de-2b79-4e5a-8241-114c24b3b3c0.webp', name: 'Bwindi Forest',      sub: 'Gorilla Trekking',    tag: 'Wildlife'    },
+    { image: '/images/44175af6-a541-43db-80fa-b3d0d08c8077.webp',   name: 'Queen Elizabeth',    sub: 'National Park',       tag: 'Safari'      },
+    { image: '/images/ecfe88cb-737f-46ac-a4c4-faa718031897.webp',name: 'Source of the Nile', sub: 'Jinja, Uganda',       tag: 'Adventure'   },
+    { image: '/images/6dfb38de-2b79-4e5a-8241-114c24b3b3c0.webp',name: 'Murchison Falls',    sub: 'North-West Uganda',   tag: 'Landscapes'  },
+    { image: '/images/0b08f704-c079-4927-8432-7894f2122c81.webp',name: 'Kampala Events',       sub: 'Capital of Uganda',   tag: 'Culture'     },
+    { image: '/images/1f9f7350-13d0-445a-8d51-ae3eb5d719c9.webp',name: 'Tour Forests',      sub: 'Chimpanzee Tracking', tag: 'Wildlife'    },
+    { image: '/images/a1109a00-8637-4fca-8093-d31e3b7a504b.webp',name: 'Events',        sub: 'Jinja Festival',      tag: 'Culture'     },
+    { image: '/images/2b03c947-5300-4a5e-a812-b5d3af102de8.webp',name: 'Fest',        sub: 'Jinja Festival',      tag: 'Culture'     },
   ]
 
   const TAG_COLORS = {
